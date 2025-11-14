@@ -1,0 +1,16 @@
+.home {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 4rem;
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+@media (max-width: 900px) {
+    .home {
+        flex-direction: column;
+        padding: 2rem 1.5rem 3rem;
+    }
+}
+

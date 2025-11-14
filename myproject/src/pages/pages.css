@@ -1,0 +1,250 @@
+.page {
+  max-width: 900px;
+  margin: clamp(3rem, 5vw, 4.5rem) auto;
+  padding: 0 clamp(1rem, 3vw, 2rem);
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.2rem, 2.5vw, 1.8rem);
+}
+
+.page h1 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw + 1rem, 3rem);
+  color: #0f172a;
+}
+
+.page p {
+  margin: 0;
+  line-height: 1.7;
+  color: rgba(15, 23, 42, 0.75);
+}
+
+.pageActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.pageActions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.12);
+  color: #1d4ed8;
+  border: 1px solid rgba(37, 99, 235, 0.28);
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pageActions a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 30px rgba(15, 23, 42, 0.15);
+}
+
+.writeForm {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.2rem, 2.4vw, 1.8rem);
+  padding: clamp(1.5rem, 2vw + 1rem, 2.4rem);
+  border-radius: clamp(14px, 3vw, 20px);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.04), rgba(37, 99, 235, 0.08));
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(12px);
+  animation: fade-slide-up 0.6s ease-out;
+}
+
+.writeField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  color: rgba(15, 23, 42, 0.75);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding-right: 30px; /* Column yönünde margin-right çalışmaz, padding kullan */
+}
+
+.writeField input,
+.writeField textarea {
+  width: 100%;
+  padding: clamp(0.75rem, 1vw + 0.6rem, 1rem);
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  font-family: inherit;
+  font-size: 1rem;
+  color: #0f172a;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  resize: vertical;
+}
+
+.writeField input:focus,
+.writeField textarea:focus {
+  outline: none;
+  border-color: rgba(37, 99, 235, 0.4);
+  box-shadow: 0 16px 32px rgba(37, 99, 235, 0.15);
+  transform: translateY(-2px);
+}
+
+.writeActions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.writeActions button {
+  padding: 0.7rem 1.6rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.writeActions button[type='submit'] {
+  background: rgba(37, 99, 235, 0.9);
+  color: white;
+  box-shadow: 0 18px 40px rgba(37, 99, 235, 0.35);
+}
+
+.writeActions button[type='submit']:hover {
+  background: rgba(37, 99, 235, 1);
+  transform: translateY(-2px);
+}
+
+.writeActions button.ghost {
+  background: transparent;
+  color: #0f172a;
+  border: 1px solid rgba(15, 23, 42, 0.2);
+}
+
+.writeActions button.ghost:hover {
+  background: rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .page {
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+  }
+
+  .pageActions {
+    flex-direction: column;
+  }
+
+  .pageActions a {
+    width: 100%;
+  }
+
+  .writeActions {
+    flex-direction: column;
+  }
+
+  .writeActions button {
+    width: 100%;
+  }
+}
+
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.write{
+  max-width: 900px;
+  margin: 4rem auto;
+  padding: 0 2rem;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+
+.write input{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.write textarea{
+  width: 100%;
+  padding: 10px;    
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.write button{
+  width: 102%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.write button:hover{
+  background-color: #000;
+  color: #fff;
+}
+
+.loginForm {
+  max-width: 900px;
+  margin: 4rem auto;
+  padding: 0 2rem;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+
+
+.writeFieldLogin {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  color: rgba(15, 23, 42, 0.75);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
+.writeFieldLogin input {
+  width: 100%;
+  padding: clamp(0.75rem, 1vw + 0.6rem, 1rem);
+  border-radius: 8px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  font-family: inherit;
+  font-size: 1rem;
+  color: #0f172a;
+  padding-left: 5px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.writeFieldLogin input:focus {
+  outline: none;
+  border-color: rgba(37, 99, 235, 0.4);
+  box-shadow: 0 16px 32px rgba(37, 99, 235, 0.15);
+  transform: translateY(-5px);
+}

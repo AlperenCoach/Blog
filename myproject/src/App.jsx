@@ -1,3 +1,4 @@
+import { FaGoogle } from "react-icons/fa";
 import { Routes, Route } from 'react-router-dom';
 import Topbar from './topbar/topbar';
 import Home from './pages/home/home';
@@ -19,7 +20,8 @@ const HomePage = () => (
     <Home />
     
     <Post />
-    <Footer />
+    <FaGoogle color="red" size={20} />
+
   </>
 );
 
@@ -36,8 +38,13 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
+      <Footer />
     </>
   );
 }
 
 export default App;
+
+
+
+

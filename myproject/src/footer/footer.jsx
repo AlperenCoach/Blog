@@ -14,7 +14,7 @@ export default function Footer() {
       <div className="footerContent">
         <div className="footerBrand">
           <h3>Alpi&apos;s Coding</h3>
-          <span>My development journey with coding and programming.</span>
+          <span>My development journey with passion for coding.</span>
         </div>
         <nav className="footerLinks" aria-label="Alt bağlantılar">
           {footerLinks.map((link) => (

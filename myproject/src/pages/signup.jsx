@@ -1,6 +1,7 @@
 
 import { useState } from 'react';               
 import './pages.css';
+import { FaGoogle } from "react-icons/fa";
 
 
 
@@ -84,6 +85,10 @@ export default function Signup() {
             </label>
         <div className="writeActions">
           <button type="submit">Kayıt Ol</button>
+          <button type="button" className="google-login-btn">
+              <FaGoogle size={18} style={{ marginRight: '8px' }} />
+              Google ile Giriş Yap
+          </button>
         </div>
       </form>
     </section>

@@ -1,4 +1,3 @@
-import { FaGoogle } from "react-icons/fa";
 import { Routes, Route } from 'react-router-dom';
 import Topbar from './topbar/topbar';
 import Home from './pages/home/home';
@@ -7,21 +6,14 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Write from './pages/Write';
 import SlidingText from './slidingtext/slidingtext';
-import Post from './post/post';
 import Footer from './footer/footer';
 import Login from './pages/login';
 import Signup from './pages/signup';
-
-
 
 const HomePage = () => (
   <>
     <SlidingText />
     <Home />
-    
-    <Post />
-    <FaGoogle color="red" size={20} />
-
   </>
 );
 

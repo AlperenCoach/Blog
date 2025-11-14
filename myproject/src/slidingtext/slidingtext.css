@@ -35,7 +35,7 @@
 }
 
 .sliding-track span {
-  font-family: 'Josefin Sans', sans-serif;
+  font-family: Poppins, sans-serif;
   font-size: clamp(1.2rem, 4vw, 2.4rem);
   letter-spacing: 0.22em;
   text-transform: uppercase;

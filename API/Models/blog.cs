@@ -16,6 +16,9 @@ namespace API.Models {
         [BsonElement("author")]
         public string Author { get; set; } = string.Empty;
         
+        [BsonElement("imageUrl")]
+        public string? ImageUrl { get; set; }
+        
         [BsonElement("createdAt")]
         public DateTime CreatedAt { get; set; }
         

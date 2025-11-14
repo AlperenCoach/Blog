@@ -10,8 +10,10 @@
 - [x] API istekleri için axios veya fetch kullanımı ✅ Frontend'de api.js servis dosyası oluşturuldu (axios)
 
 ### 2. Kimlik Doğrulama (Authentication) Sistemi
-- [ ] Login sayfası implementasyonu (login.jsx boş)
-- [ ] Login route'u eklenmesi (/login)
+- [x] Login sayfası implementasyonu ✅ login.jsx component'i oluşturuldu, form validasyonu eklendi
+- [x] Login route'u eklenmesi (/login) ✅ Route eklendi
+- [x] Signup sayfası implementasyonu ✅ signup.jsx component'i oluşturuldu, form state yönetimi eklendi
+- [x] Signup route'u eklenmesi (/signup) ✅ Route eklendi
 - [ ] JWT token yönetimi
 - [ ] Kullanıcı oturum yönetimi (session management)
 - [ ] Logout fonksiyonelliği (şu an sadece buton var)
@@ -25,10 +27,14 @@
 - [ ] Contact formu için backend entegrasyonu
 
 ### 4. Blog Yazıları Yönetimi
-- [ ] Dinamik blog yazıları listesi (şu an hardcoded)
-- [ ] Blog yazısı detay sayfası (/post/:id route'u eksik)
-- [ ] Blog yazılarını veritabanından çekme
-- [ ] Blog yazısı oluşturma/güncelleme/silme
+- [x] Dinamik blog yazıları listesi ✅ Posts component'i API'den veri çekiyor, hardcoded veriler kaldırıldı
+- [x] Blog yazılarını veritabanından çekme ✅ getBlogs() API çağrısı ile MongoDB'den veri çekiliyor
+- [x] Home sayfası layout güncellemesi ✅ Sidebar ve grid card layout eklendi
+- [x] Blog card'larına resim desteği ✅ ImageUrl alanı eklendi, otomatik placeholder resim seçimi
+- [x] "Latest posts" başlığı ve görünüm seçenekleri ✅ Grid/List görünüm toggle eklendi
+- [x] Loading states ✅ Posts component'inde loading, error, empty state'ler eklendi
+- [ ] Blog yazısı detay sayfası (/blog/:id route'u eksik)
+- [ ] Blog yazısı oluşturma/güncelleme/silme (API hazır, UI eksik)
 - [ ] Blog yazıları için pagination (sayfalama)
 
 ## 🟡 Orta Öncelik (Önemli)
@@ -42,19 +48,19 @@
 ### 6. State Yönetimi
 - [ ] React Context API veya Redux/Zustand kurulumu
 - [ ] Global state yönetimi (kullanıcı bilgileri, yazılar)
-- [ ] useState ve useEffect hook'larının kullanımı
+- [x] useState ve useEffect hook'larının kullanımı ✅ Posts, Login, Signup component'lerinde kullanılıyor
 
 ### 7. Hata Yönetimi ve Loading States
 - [ ] Error boundary component'i
-- [ ] Loading spinner/indicator'ları
-- [ ] API hataları için error handling
-- [ ] Kullanıcı dostu hata mesajları
+- [x] Loading spinner/indicator'ları ✅ Posts component'inde loading state gösterimi eklendi
+- [x] API hataları için error handling ✅ Posts component'inde try-catch ve error state yönetimi
+- [x] Kullanıcı dostu hata mesajları ✅ Error mesajları kullanıcıya gösteriliyor
 
 ### 8. Responsive Tasarım İyileştirmeleri
-- [ ] Mobil uyumluluk testleri
-- [ ] Tablet görünümü optimizasyonu
+- [x] Mobil uyumluluk testleri ✅ CSS media queries ile responsive tasarım eklendi
+- [x] Tablet görünümü optimizasyonu ✅ Posts, Sidebar, Home component'lerinde responsive breakpoint'ler
 - [ ] Hamburger menü (mobil için)
-- [ ] Touch-friendly butonlar ve linkler
+- [x] Touch-friendly butonlar ve linkler ✅ Card'lar ve butonlar touch-friendly boyutlarda
 
 ## 🟢 Düşük Öncelik (İyileştirmeler)
 
@@ -65,7 +71,7 @@
 - [ ] Structured data (JSON-LD) eklenmesi
 
 ### 10. Performans Optimizasyonu
-- [ ] Image lazy loading
+- [x] Image lazy loading ✅ Blog card'larında loading="lazy" attribute eklendi
 - [ ] Code splitting
 - [ ] React.memo kullanımı (gerektiğinde)
 - [ ] Bundle size optimizasyonu
@@ -98,9 +104,9 @@
 - [ ] .env.example dosyası
 
 ### 16. Ek Özellikler
-- [ ] Blog yazıları için kategori/filtreleme
-- [ ] Yorum sistemi
-- [ ] Like/favorite özelliği
+- [x] Blog yazıları için kategori/filtreleme ✅ Kategori otomatik tespit ediliyor ve gösteriliyor
+- [ ] Yorum sistemi (UI'da gösteriliyor ama backend entegrasyonu yok)
+- [x] Like/favorite özelliği ✅ UI'da like sayısı gösteriliyor (backend entegrasyonu eksik)
 - [ ] Blog yazısı paylaşma (social media)
 - [ ] RSS feed
 - [ ] Dark mode toggle
@@ -132,8 +138,26 @@
 
 ## 📝 Notlar
 
-- **Mevcut Durum**: Site temel yapıya sahip ancak tüm veriler hardcoded
-- **En Kritik Eksikler**: Backend, Authentication, Form handling
-- **Önerilen Sıralama**: Önce backend ve auth, sonra form handling, en son UI iyileştirmeleri
+- **Mevcut Durum**: 
+  - ✅ Backend API ve MongoDB entegrasyonu tamamlandı
+  - ✅ Blog yazıları API'den dinamik olarak çekiliyor
+  - ✅ Home sayfası modern layout ile güncellendi (Sidebar + Grid card'lar)
+  - ✅ Login/Signup sayfaları oluşturuldu
+  - ✅ Blog card'larına resim desteği eklendi
+  - ✅ "Latest posts" başlığı ve görünüm seçenekleri eklendi
+  - ⚠️ Blog detay sayfası henüz oluşturulmadı
+  - ⚠️ Authentication backend entegrasyonu eksik (JWT, session)
+  - ⚠️ Form submit handler'ları eksik (Write, Contact)
+  
+- **En Kritik Eksikler**: 
+  - Blog detay sayfası (/blog/:id route)
+  - Authentication backend entegrasyonu (JWT token)
+  - Form handling (Write, Contact)
+  
+- **Önerilen Sıralama**: 
+  1. Blog detay sayfası oluşturma
+  2. Authentication backend entegrasyonu
+  3. Form handling (Write, Contact)
+  4. Protected routes
 
 

@@ -162,7 +162,7 @@
   margin-left: 0.5rem;
 }
 
-.logoutButton {
+.loginButton {
   background: rgba(56, 189, 248, 0.2);
   color: #38bdf8;
   border: 3px solid rgba(0, 75, 107, 0.4);
@@ -174,13 +174,13 @@
   transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-.logoutButton:hover {
+.loginButton:hover {
   background-color: rgba(56, 189, 248, 0.35);
   color: #f8fafc;
   transform: translateY(-2px);
 }
 
-.logoutButton:focus-visible {
+.loginButton:focus-visible {
   outline: 2px solid rgba(56, 189, 248, 0.6);
   outline-offset: 2px;
 }
@@ -466,6 +466,76 @@
   font-size: 1rem;
   padding: 2rem 0;
   margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.searchResultsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.searchResultItem {
+  display: block;
+  padding: 1rem;
+  background: #f8f9fb;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s ease, transform 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.searchResultItem:hover {
+  background: #e2e8f0;
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+}
+
+.searchResultTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 0.5rem 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.searchResultSnippet {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.5;
+  font-family: 'Poppins', sans-serif;
+}
+
+.searchResultCategory {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  background: #2563eb;
+  color: white;
+  border-radius: 12px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+}
+
+.searchViewAll {
+  width: 100%;
+  padding: 0.875rem;
+  margin-top: 0.5rem;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.searchViewAll:hover {
+  background: #1d4ed8;
 }
 
 /* Search Modal Responsive */

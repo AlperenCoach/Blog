@@ -36,6 +36,42 @@
   justify-self: center;
 }
 
+/* Hamburger Button - Sadece mobilde görünür */
+.hamburgerButton {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 20;
+  position: relative;
+}
+
+.hamburgerLine {
+  width: 28px;
+  height: 3px;
+  background-color: #0f172a;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.hamburgerLine.open:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburgerLine.open:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburgerLine.open:nth-child(3) {
+  transform: rotate(-45deg) translate(8px, -8px);
+}
+
 .topRight {
   justify-self: end;
   gap: 0.75rem;
@@ -173,21 +209,57 @@
 
 @media (max-width: 768px) {
   .topInner {
-    grid-template-columns: 1fr;
+    grid-template-columns: auto 1fr auto;
     justify-items: center;
     gap: 1rem;
-    padding: 1.15rem 1.25rem 1.5rem;
+    padding: 1.15rem 1.25rem;
+    align-items: center;
+  }
+
+  /* Hamburger butonu mobilde görünür */
+  .hamburgerButton {
+    display: flex;
+    justify-self: start;
+  }
+
+  /* Menü mobilde varsayılan olarak gizli */
+  .topCenter {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    z-index: 15;
+  }
+
+  /* Menü açık olduğunda göster */
+  .topCenter.menuOpen {
+    max-height: 500px;
+    padding: 1.5rem 0;
   }
 
   .topNavList {
-    justify-content: center;
-    flex-wrap: wrap;
-    row-gap: 0.75rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0 1.25rem;
   }
 
   .topLeft,
   .topRight {
-    justify-self: center;
+    justify-self: end;
+  }
+
+  .topLeft {
+    margin-left: 0;
+  }
+
+  .topRight {
+    margin-right: 0;
   }
 }
 
@@ -203,6 +275,251 @@
     width: 60px;
     height: 60px;
     margin-right: 0;
+  }
+}
+
+/* Search Modal Styles */
+.searchModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 5rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.searchModalContent {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  animation: slideDown 0.3s ease;
+  overflow: hidden;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.searchModalClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(148, 163, 184, 0.15);
+  color: #0f172a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  z-index: 10;
+}
+
+.searchModalClose:hover {
+  background-color: rgba(148, 163, 184, 0.25);
+  transform: rotate(90deg);
+}
+
+.searchModalClose i {
+  font-size: 1.1rem;
+}
+
+.searchModalForm {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: clamp(14px, 3vw, 20px);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.04), rgba(37, 99, 235, 0.08));
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+  
+}
+
+.searchInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.searchInputIcon {
+  position: absolute;
+  left: 1.25rem;
+  color: rgba(148, 163, 184, 0.6);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 1rem 3rem 1rem 3.5rem;
+  border: 2px solid rgba(148, 163, 184, 0.3);
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-family: 'Poppins', sans-serif;
+  color: #0f172a;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+}
+
+.searchInput::placeholder {
+  color: rgba(148, 163, 184, 0.6);
+}
+
+.searchClearButton {
+  position: absolute;
+  right: 1rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(148, 163, 184, 0.15);
+  color: #0f172a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.searchClearButton:hover {
+  background-color: rgba(148, 163, 184, 0.25);
+}
+
+.searchClearButton i {
+  font-size: 0.85rem;
+}
+
+.searchSubmitButton {
+  padding: 0.875rem 2rem;
+  background-color: #38bdf8;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  align-self: flex-start;
+}
+
+.searchSubmitButton:hover {
+  background-color: #0ea5e9;
+  transform: translateY(-2px);
+}
+
+.searchSubmitButton:active {
+  transform: translateY(0);
+}
+
+.searchResults {
+  padding: 1.5rem 2rem 2rem;
+  max-height: calc(80vh - 200px);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.searchPlaceholder {
+  text-align: center;
+  color: rgba(148, 163, 184, 0.7);
+  font-size: 1rem;
+  padding: 2rem 0;
+  margin: 0;
+}
+
+/* Search Modal Responsive */
+@media (max-width: 768px) {
+  .searchModalOverlay {
+    padding-top: 2rem;
+    align-items: flex-start;
+  }
+
+  .searchModalContent {
+    width: 95%;
+    max-height: 90vh;
+    border-radius: 12px;
+  }
+
+  .searchModalForm {
+    padding: 1.5rem;
+  }
+
+  .searchResults {
+    padding: 1rem 1.5rem 1.5rem;
+    max-height: calc(90vh - 180px);
+  }
+}
+
+@media (max-width: 520px) {
+  .searchModalOverlay {
+    padding-top: 1rem;
+  }
+
+  .searchModalContent {
+    width: 100%;
+    border-radius: 0;
+    max-height: 100vh;
+    height: 100vh;
+  }
+
+  .searchModalForm {
+    padding: 1.25rem;
+  }
+
+  .searchInput {
+    font-size: 1rem;
+    padding: 0.875rem 2.75rem 0.875rem 3rem;
+  }
+
+  .searchSubmitButton {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .searchResults {
+    padding: 1rem 1.25rem 1.25rem;
+    max-height: calc(100vh - 200px);
   }
 }
 

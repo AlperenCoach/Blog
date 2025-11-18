@@ -593,3 +593,19 @@
   }
 }
 
+
+.topAvatarButton {
+  margin-top: 10px;
+  margin-right: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 20;
+  }
+
+
+

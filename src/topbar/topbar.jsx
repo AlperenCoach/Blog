@@ -23,6 +23,15 @@ export default function Topbar() {
   const [searchResults, setSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const [allBlogs, setAllBlogs] = useState([]);
+  const [isAvatarOpen, setIsAvatarOpen] = useState(false);
+
+  const toggleAvatar = () => {
+    setIsAvatarOpen((prev) => !prev);
+  };
+
+  const closeAvatar = () => {
+    setIsAvatarOpen(false);
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -30,6 +39,7 @@ export default function Topbar() {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+    closeAvatar();
   };
 
   const toggleSearch = () => {
@@ -108,17 +118,21 @@ export default function Topbar() {
 
     if (isSearchOpen) {
       document.addEventListener('keydown', handleEscape);
-      // Modal açıkken body scroll'unu engelle
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
     };
   }, [isSearchOpen]);
+
+  useEffect(() => {
+    const shouldLockScroll = isSearchOpen || isAvatarOpen;
+    document.body.style.overflow = shouldLockScroll ? 'hidden' : 'unset';
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isSearchOpen, isAvatarOpen]);
 
   return (
     <header className="top">
@@ -216,11 +230,21 @@ export default function Topbar() {
           >
             <i className="fa-solid fa-magnifying-glass" aria-hidden="true" />
           </button>
-          <img
-            className="topAvatar"
-            src={unknownperson}
-            alt="Profil"
-          />
+         <div className="topAvatarWrapper">
+            <button 
+              type="button" 
+              className="topAvatarButton" 
+              onClick={toggleAvatar}
+              aria-expanded={isAvatarOpen}
+              aria-haspopup="true"
+            >
+            <img
+              className="topAvatar"
+              src={unknownperson}
+              alt="Profil"
+            />
+            </button>
+            </div>
         </div>
       </div>
 

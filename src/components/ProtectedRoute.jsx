@@ -13,7 +13,7 @@ export default function ProtectedRoute({ children }) {
         minHeight: '50vh',
         fontFamily: "'Poppins', sans-serif"
       }}>
-        Yükleniyor...
+        Loading...
       </div>
     );
   }
@@ -24,4 +24,6 @@ export default function ProtectedRoute({ children }) {
 
   return children;
 }
+
+
 

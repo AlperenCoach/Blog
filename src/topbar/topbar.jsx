@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getBlogs } from '../services/api';
@@ -24,9 +24,16 @@ export default function Topbar() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [allBlogs, setAllBlogs] = useState([]);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
+  const avatarMenuRef = useRef(null);
 
   const toggleAvatar = () => {
     setIsAvatarOpen((prev) => !prev);
+  };
+
+  const handleLogout = () => {
+    logout();
+    setIsAvatarOpen(false);
+    navigate('/');
   };
 
   const closeAvatar = () => {
@@ -54,7 +61,7 @@ export default function Topbar() {
     setSearchTerm('');
   };
 
-  // Blog verilerini yükle
+  // Load blog data for search suggestions
   useEffect(() => {
     const loadBlogs = async () => {
       try {
@@ -91,7 +98,7 @@ export default function Topbar() {
       return titleMatch || contentMatch || categoryMatch || authorMatch;
     });
     
-    setSearchResults(results.slice(0, 5)); // İlk 5 sonuç
+    setSearchResults(results.slice(0, 5)); // Limit to first 5 results
     setSearchLoading(false);
   };
 
@@ -107,7 +114,7 @@ export default function Topbar() {
     closeSearch();
   };
 
-  // ESC tuşu ile modal'ı kapat
+  // Close modal with ESC key
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape' && isSearchOpen) {
@@ -134,13 +141,28 @@ export default function Topbar() {
     };
   }, [isSearchOpen, isAvatarOpen]);
 
+  useEffect(() => {
+    if (!isAvatarOpen) {
+      return undefined;
+    }
+
+    const handleClickOutside = (event) => {
+      if (avatarMenuRef.current && !avatarMenuRef.current.contains(event.target)) {
+        setIsAvatarOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isAvatarOpen]);
+
   return (
     <header className="top">
       <div className="topInner">
         <button 
           className="hamburgerButton" 
           onClick={toggleMenu}
-          aria-label="Menüyü aç/kapat"
+          aria-label="Toggle menu"
           aria-expanded={isMenuOpen}
         >
           <span className={`hamburgerLine ${isMenuOpen ? 'open' : ''}`}></span>
@@ -176,7 +198,7 @@ export default function Topbar() {
             <i className="fa-brands fa-x-twitter" aria-hidden="true" />
           </a>
         </div>
-        <nav className={`topCenter ${isMenuOpen ? 'menuOpen' : ''}`} aria-label="Ana menü">
+        <nav className={`topCenter ${isMenuOpen ? 'menuOpen' : ''}`} aria-label="Main navigation">
           <ul className="topNavList">
             {navLinks.map((link) => (
               <li key={link.to}>
@@ -208,13 +230,13 @@ export default function Topbar() {
                       navigate('/');
                     }}
                   >
-                    Çıkış Yap
+                    Log Out
                   </button>
                 </div>
               ) : (
                 <a href="/login" className="loginButtonLink" onClick={closeMenu}>
                   <button type="button" className="loginButton" onClick={closeMenu}>
-                    Login
+                    Sign In
                   </button>
                 </a>
               )}
@@ -230,21 +252,89 @@ export default function Topbar() {
           >
             <i className="fa-solid fa-magnifying-glass" aria-hidden="true" />
           </button>
-         <div className="topAvatarWrapper">
+          <div className="topAvatarWrapper" ref={avatarMenuRef}>
             <button 
               type="button" 
               className="topAvatarButton" 
               onClick={toggleAvatar}
               aria-expanded={isAvatarOpen}
               aria-haspopup="true"
+              aria-controls="avatar-menu"
             >
-            <img
-              className="topAvatar"
-              src={unknownperson}
-              alt="Profil"
-            />
+              <img
+                className="topAvatar"
+                src={unknownperson}
+                alt="Profil"
+              />
             </button>
+            <div 
+              id="avatar-menu"
+              className={`avatarDropdown ${isAvatarOpen ? 'open' : ''}`}
+              role="menu"
+            >
+              {isAuthenticated() ? (
+                <>
+                  <div className="avatarDropdownHeader">
+                    <p className="avatarGreeting">Hello,</p>
+                    <p className="avatarUser">
+                      {user?.fullName || user?.username || user?.email}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="avatarDropdownItem"
+                    onClick={() => {
+                      navigate('/write');
+                      setIsAvatarOpen(false);
+                    }}
+                  >
+                    Write a Post
+                  </button>
+                  <button
+                    type="button"
+                    className="avatarDropdownItem"
+                    onClick={() => {
+                      navigate('/profile');
+                      setIsAvatarOpen(false);
+                    }}
+                  >
+                    My Profile
+                  </button>
+                  <button
+                    type="button"
+                    className="avatarDropdownItem logout"
+                    onClick={handleLogout}
+                  >
+                    Log Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p className="avatarGreeting">Welcome!</p>
+                  <button
+                    type="button"
+                    className="avatarDropdownItem"
+                    onClick={() => {
+                      navigate('/login');
+                      setIsAvatarOpen(false);
+                    }}
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    type="button"
+                    className="avatarDropdownItem"
+                    onClick={() => {
+                      navigate('/signup');
+                      setIsAvatarOpen(false);
+                    }}
+                  >
+                    Create Account
+                  </button>
+                </>
+              )}
             </div>
+          </div>
         </div>
       </div>
 
@@ -255,7 +345,7 @@ export default function Topbar() {
             <button 
               className="searchModalClose" 
               onClick={closeSearch}
-              aria-label="Aramayı kapat"
+              aria-label="Close search"
             >
               <i className="fa-solid fa-xmark" aria-hidden="true"></i>
             </button>
@@ -266,7 +356,7 @@ export default function Topbar() {
                 <input
                   type="text"
                   className="searchInput"
-                  placeholder="Blog yazılarında ara..."
+                  placeholder="Search blog posts..."
                   value={searchTerm}
                   onChange={handleSearchChange}
                   autoFocus
@@ -276,20 +366,20 @@ export default function Topbar() {
                     type="button"
                     className="searchClearButton"
                     onClick={() => setSearchTerm('')}
-                    aria-label="Aramayı temizle"
+                    aria-label="Clear search"
                   >
                     <i className="fa-solid fa-xmark" aria-hidden="true"></i>
                   </button>
                 )}
               </div>
               <button type="submit" className="searchSubmitButton">
-                Ara
+                Search
               </button>
             </form>
 
             <div className="searchResults">
               {searchLoading ? (
-                <p className="searchPlaceholder">Aranıyor...</p>
+                <p className="searchPlaceholder">Searching...</p>
               ) : searchTerm.trim() && searchResults.length > 0 ? (
                 <div className="searchResultsList">
                   {searchResults.map((blog) => (
@@ -313,7 +403,7 @@ export default function Topbar() {
                       className="searchViewAll"
                       onClick={handleSearchSubmit}
                     >
-                      Tüm sonuçları gör ({allBlogs.filter(b => {
+                      View all results ({allBlogs.filter(b => {
                         const term = searchTerm.toLowerCase();
                         return b.title?.toLowerCase().includes(term) ||
                                b.content?.toLowerCase().includes(term) ||
@@ -324,9 +414,9 @@ export default function Topbar() {
                   )}
                 </div>
               ) : searchTerm.trim() && searchResults.length === 0 ? (
-                <p className="searchPlaceholder">Sonuç bulunamadı</p>
+                <p className="searchPlaceholder">No results found</p>
               ) : (
-                <p className="searchPlaceholder">Aramaya başlamak için bir şey yazın</p>
+                <p className="searchPlaceholder">Start typing to search</p>
               )}
             </div>
           </div>

@@ -281,7 +281,7 @@
   align-self: flex-start;
 }
 
-/* Responsive - List view için mobilde dikey düzen */
+/* Responsive - list view vertical layout on mobile */
 @media (max-width: 768px) {
   .postsGrid.listView .postCard {
     flex-direction: column;

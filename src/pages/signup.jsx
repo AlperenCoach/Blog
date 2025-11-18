@@ -23,7 +23,7 @@ export default function Signup() {
       ...formData,
       [e.target.name]: e.target.value
     });
-    // Mesajı temizle
+    // Clear helper message when user edits a field
     if (message) {
       setMessage('');
       setMessageColor('');
@@ -35,16 +35,15 @@ export default function Signup() {
     setLoading(true);
     setMessage('');
 
-    // Validasyon
     if (formData.password !== formData.confirmPassword) {
-      setMessage('Şifreler eşleşmiyor.');
+      setMessage('Passwords do not match.');
       setMessageColor('red');
       setLoading(false);
       return;
     }
 
     if (formData.password.length < 6) {
-      setMessage('Şifre en az 6 karakter olmalıdır.');
+      setMessage('Password must be at least 6 characters.');
       setMessageColor('red');
       setLoading(false);
       return;
@@ -61,11 +60,11 @@ export default function Signup() {
       if (result.success) {
         navigate('/');
       } else {
-        setMessage(result.error || 'Kayıt olurken bir hata oluştu.');
+        setMessage(result.error || 'Something went wrong while signing up.');
         setMessageColor('red');
       }
     } catch (error) {
-      setMessage('Kayıt olurken bir hata oluştu.');
+      setMessage('Something went wrong while signing up.');
       setMessageColor('red');
     } finally {
       setLoading(false);
@@ -78,24 +77,24 @@ export default function Signup() {
       <h1>Signup</h1>
       <form className="writeForm" onSubmit={handleSubmit}>
         <label className="writeField" htmlFor="username">
-          Kullanıcı Adı
+          Username
           <input 
             type="text" 
             id="username" 
             name="username" 
-            placeholder="Kullanıcı Adı" 
+            placeholder="Username" 
             value={formData.username}
             onChange={handleChange}
             required 
           />
         </label>
         <label className="writeField" htmlFor="phoneNumber">
-          Telefon Numarası
+          Phone number
           <input 
             type="text" 
             id="phoneNumber" 
             name="phoneNumber" 
-            placeholder="Telefon Numarası" 
+            placeholder="Phone number" 
             value={formData.phoneNumber}
             onChange={handleChange}
             required 
@@ -114,24 +113,24 @@ export default function Signup() {
           />
         </label>
         <label className="writeField" htmlFor="password">
-          Şifre
+          Password
           <input 
             type="password" 
             id="password" 
             name="password" 
-            placeholder="Şifre" 
+            placeholder="Password" 
             value={formData.password}
             onChange={handleChange}
             required 
           />
         </label>
         <label className="writeField" htmlFor="confirmPassword">
-          Şifre Tekrar
+          Confirm password
           <input 
             type="password" 
             id="confirmPassword" 
             name="confirmPassword" 
-            placeholder="Şifre Tekrar" 
+            placeholder="Confirm password" 
             value={formData.confirmPassword}
             onChange={handleChange}
             required 
@@ -152,11 +151,11 @@ export default function Signup() {
         )}
         <div className="writeActions">
           <button type="submit" disabled={loading}>
-            {loading ? 'Kayıt yapılıyor...' : 'Kayıt Ol'}
+            {loading ? 'Creating account...' : 'Sign Up'}
           </button>
           <button type="button" className="google-login-btn">
               <FaGoogle size={18} style={{ marginRight: '8px' }} />
-              Google ile Giriş Yap
+              Continue with Google
           </button>
         </div>
         <p style={{ 
@@ -165,7 +164,7 @@ export default function Signup() {
           fontSize: '0.9rem',
           fontFamily: "'Poppins', sans-serif"
         }}>
-          Zaten hesabınız var mı? <Link to="/login" style={{ color: '#2563eb' }}>Giriş Yap</Link>
+          Already have an account? <Link to="/login" style={{ color: '#2563eb' }}>Sign In</Link>
         </p>
       </form>
     </section>

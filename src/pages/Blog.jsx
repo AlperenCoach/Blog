@@ -5,13 +5,11 @@ export default function Blog() {
     <section className="page">
       <h1>Blog</h1>
       <p>
-        Uzun formlu teknik yazıları, öğrenme notlarımı ve deneysel projelerdeki
-        gözlemlerimi burada derliyorum. React ekosistemi, .NET dünyası ve üretkenlik
-        üzerine yeni içerikler düzenli olarak ekleniyor.
+        This is where I collect long-form technical articles, study notes, and observations from experimental projects.
+        Expect fresh content on the React ecosystem, the .NET world, and sustainable productivity habits.
       </p>
       <p>
-        Ana sayfadaki kartlardan öne çıkan yazıları inceleyebilir ya da yeni kategoriler
-        önermek için benimle iletişime geçebilirsin.
+        Browse featured posts from the homepage or reach out if you’d like to suggest new categories.
       </p>
     </section>
   );

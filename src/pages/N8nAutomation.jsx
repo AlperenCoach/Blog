@@ -5,24 +5,21 @@ export default function N8nAutomation() {
     <section className="n8nPage">
       <div className="n8nHero">
         <div className="n8nHeroText">
-          <p className="n8nTag">Otomasyon · Low-code</p>
-          <h1>n8n le uçtan uca iş akışı otomasyonu</h1>
+          <p className="n8nTag">Automation · Low-code</p>
+          <h1>End-to-end workflow automation with n8n</h1>
           <p>
-            SaaS hizmetlerini birbirine bağlamak, webhook tetikleyicileri kurmak ve veri
-            zenginleştirme adımlarını görsel arayüzle tasarlamak için n8n’i nasıl kullanabileceğimi bu
-            rehberde topladım. Kod yazmadan hızlı prototipler hazırlarken aynı zamanda sürüm kontrolü ve
-            gizli anahtar yönetimi gibi kritik noktaları da ele aldım.
+            I gathered everything I’ve learned about using n8n to connect SaaS services, build webhook triggers, and design data-enrichment steps in a visual interface. The guide also covers version control and secrets management so you can prototype quickly without writing code.
           </p>
           <ul>
-            <li>Gerçek zamanlı tetikleyiciler ile CRM ve destek araçlarını senkronize etme</li>
-            <li>HTTP node’ları ile REST/GraphQL API katmanını orkestre etme</li>
-            <li>OpenAI, Slack ve Notion gibi popüler entegrasyonları otomatikleştirme</li>
+            <li>Keep CRM and support tools in sync with real-time triggers</li>
+            <li>Orchestrate REST/GraphQL layers through HTTP nodes</li>
+            <li>Automate popular integrations such as OpenAI, Slack, and Notion</li>
           </ul>
         </div>
         <div className="n8nHeroImage">
           <img
             src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&h=800&fit=crop"
-            alt="n8n ile hazırlanan otomasyon akışı"
+            alt="Workflow automated with n8n"
             loading="lazy"
           />
         </div>
@@ -30,37 +27,34 @@ export default function N8nAutomation() {
 
       <div className="n8nContentGrid">
         <article className="n8nCard">
-          <h2>Akışınızı modelleyin</h2>
+          <h2>Model your flow</h2>
           <p>
-            n8n’de node’ları sürükle bırak yöntemiyle bağlayarak karmaşık koşullar kurabilirsiniz. Split
-            In Batches node’u, yüksek hacimli veri setlerini throttling olmadan işlememe yardımcı oluyor.
+            Drag and connect nodes in n8n to build complex logic. Split In Batches helps me process high-volume datasets without hitting API throttling limits.
           </p>
           <img
             src="https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?w=900&h=600&fit=crop"
-            alt="Workflow tasarım ekranı"
+            alt="Workflow design screen"
             loading="lazy"
           />
         </article>
 
         <article className="n8nCard">
-          <h2>Versiyon ve güvenlik</h2>
+          <h2>Versioning and security</h2>
           <p>
-            Her akış JSON olarak saklandığı için Git repo’suna dahil etmek mümkün. API anahtarlarını n8n
-            Credentials modülüyle şifreleyerek paylaşmadan takım içi kullanım sağlayabilirsiniz.
+            Every flow is stored as JSON, so it can live inside a Git repo. API keys stay encrypted with the n8n Credentials module, enabling safe collaboration without sharing secrets.
           </p>
           <img
             src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&h=600&fit=crop"
-            alt="API entegrasyon paneli"
+            alt="API integration panel"
             loading="lazy"
           />
         </article>
       </div>
 
       <div className="n8nCTA">
-        <h3>Demo akışını incele</h3>
+        <h3>Explore the demo flow</h3>
         <p>
-          Hazırladığım örnek akış, gelen form cevaplarını Airtable’a kaydedip Slack kanalına özet
-          gönderiyor. Dosyayı içe aktararak kendi projenizde kullanabilirsiniz.
+          The sample flow records form submissions to Airtable and posts a summary to Slack. Import the file and adapt it to your own stack in minutes.
         </p>
         <a
           href="https://n8n.io/workflows"
@@ -68,7 +62,7 @@ export default function N8nAutomation() {
           rel="noopener noreferrer"
           className="n8nCTAButton"
         >
-          n8n workflow galerisini aç
+          Browse the n8n workflow gallery
         </a>
       </div>
     </section>

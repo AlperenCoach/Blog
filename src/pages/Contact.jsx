@@ -29,16 +29,16 @@ export default function Contact() {
     setMessage('');
 
     try {
-      // TODO: Backend hazır olduğunda API çağrısı yapılacak
+      // TODO: API integration will replace this mock when backend is ready
       // await api.post('/contact', formData);
-      
-      // Şimdilik mock
+
+      // Temporary mock response
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      setMessage('Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağım.');
+      setMessage('Your message has been sent! I’ll get back to you shortly.');
       setMessageColor('green');
       
-      // Formu temizle
+      // Reset form
       setFormData({
         name: '',
         email: '',
@@ -47,7 +47,7 @@ export default function Contact() {
       });
     } catch (error) {
       console.error('Error sending message:', error);
-      setMessage('Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin.');
+      setMessage('Something went wrong while sending the message. Please try again.');
       setMessageColor('red');
     } finally {
       setLoading(false);
@@ -56,10 +56,9 @@ export default function Contact() {
 
   return (
     <section className="page">
-      <h1>İletişim</h1>
+      <h1>Contact</h1>
       <p>
-        Bir proje fikriniz, mentorluk ihtiyacınız ya da paylaşmak istediğiniz geribildirim
-        varsa mesaj atmanız yeterli. Genellikle 24 saat içinde geri dönüş yapıyorum.
+        Have a project idea, need mentorship, or want to share feedback? Drop me a line— I typically reply within 24 hours.
       </p>
       
       {message && (
@@ -78,18 +77,18 @@ export default function Contact() {
 
       <form className="writeForm" onSubmit={handleSubmit}>
         <label className="writeField">
-          Adınız
+          Your name
           <input 
             type="text" 
             name="name"
-            placeholder="Adınız Soyadınız" 
+            placeholder="Full name" 
             value={formData.name}
             onChange={handleChange}
             required 
           />
         </label>
         <label className="writeField">
-          E-posta
+          Email
           <input 
             type="email" 
             name="email"
@@ -100,21 +99,21 @@ export default function Contact() {
           />
         </label>
         <label className="writeField">
-          Konu
+          Subject
           <input 
             type="text" 
             name="subject"
-            placeholder="Mesajınızın konusu" 
+            placeholder="What is this about?" 
             value={formData.subject}
             onChange={handleChange}
             required 
           />
         </label>
         <label className="writeField">
-          Mesajınız
+          Message
           <textarea 
             name="message"
-            placeholder="Mesajınızı buraya yazın..." 
+            placeholder="Write your message here..." 
             rows={6}
             value={formData.message}
             onChange={handleChange}
@@ -123,7 +122,7 @@ export default function Contact() {
         </label>
         <div className="writeActions">
           <button type="submit" disabled={loading}>
-            {loading ? 'Gönderiliyor...' : 'Gönder'}
+            {loading ? 'Sending...' : 'Send'}
           </button>
           <button 
             type="reset" 
@@ -138,18 +137,18 @@ export default function Contact() {
               setMessage('');
             }}
           >
-            Temizle
+            Clear
           </button>
         </div>
       </form>
 
       <div className="pageActions" style={{ marginTop: '2rem' }}>
-        <a href="mailto:merhaba@alpi.dev">E-posta Gönder</a>
+        <a href="mailto:merhaba@alpi.dev">Send an email</a>
         <a href="https://cal.com/" target="_blank" rel="noreferrer">
-          Görüşme Planla
+          Book a call
         </a>
         <a href="https://github.com/" target="_blank" rel="noreferrer">
-          GitHub Profilim
+          My GitHub profile
         </a>
       </div>
     </section>

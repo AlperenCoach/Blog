@@ -3,9 +3,9 @@ import './sidebar.css';
 
 export default function Sidebar() {
   const navLinks = [
-    { label: 'Ana Sayfa', path: '/' },
+    { label: 'Home', path: '/' },
     { label: 'Blog', path: '/blog' },
-    { label: 'Hakkımda', path: '/about' },
+    { label: 'About', path: '/about' },
   ];
 
   return (
@@ -33,8 +33,7 @@ export default function Sidebar() {
         </div>
         <div className="sidebarBio">
           <p>
-            Minimal tasarımlı projeler geliştirirken öğrendiklerimi kısa notlar halinde
-            kaydediyorum. Frontend ve backend arasında köprü kurmayı seviyorum.
+            I keep short notes from building minimally designed projects. Bridging the gap between frontend and backend is my favorite part of the stack.
           </p>
         </div>
       </div>

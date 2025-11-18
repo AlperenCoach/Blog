@@ -20,7 +20,7 @@ export default function BlogDetail() {
         setBlog(data);
       } catch (err) {
         console.error('Error fetching blog:', err);
-        setError('Blog yazısı bulunamadı veya yüklenirken bir hata oluştu.');
+        setError('The blog post could not be found or failed to load.');
       } finally {
         setLoading(false);
       }
@@ -46,14 +46,14 @@ export default function BlogDetail() {
     if (titleLower.includes('typescript')) return 'TypeScript';
     if (titleLower.includes('net') || titleLower.includes('.net')) return '.NET';
     if (titleLower.includes('mongodb')) return 'MongoDB';
-    if (titleLower.includes('tasarım') || titleLower.includes('design')) return 'Tasarım';
-    return 'Genel';
+    if (titleLower.includes('tasarim') || titleLower.includes('design')) return 'Design';
+    return 'General';
   };
 
   if (loading) {
     return (
       <div className="blogDetail">
-        <div className="blogDetailLoading">Yükleniyor...</div>
+        <div className="blogDetailLoading">Loading...</div>
       </div>
     );
   }
@@ -62,9 +62,9 @@ export default function BlogDetail() {
     return (
       <div className="blogDetail">
         <div className="blogDetailError">
-          <p>{error || 'Blog yazısı bulunamadı.'}</p>
+          <p>{error || 'Blog post not found.'}</p>
           <Link to="/" className="blogDetailBackButton">
-            <FaArrowLeft /> Ana Sayfaya Dön
+            <FaArrowLeft /> Back to Home
           </Link>
         </div>
       </div>
@@ -75,7 +75,7 @@ export default function BlogDetail() {
     <article className="blogDetail">
       <div className="blogDetailContainer">
         <Link to="/" className="blogDetailBackLink">
-          <FaArrowLeft /> Tüm Yazılar
+          <FaArrowLeft /> All posts
         </Link>
 
         <header className="blogDetailHeader">
@@ -84,14 +84,14 @@ export default function BlogDetail() {
               <FaTag /> {getCategory(blog)}
             </div>
             <time className="blogDetailDate" dateTime={blog.createdAt}>
-              <FaCalendar /> {new Date(blog.createdAt).toLocaleDateString('tr-TR', {
+              <FaCalendar /> {new Date(blog.createdAt).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })}
             </time>
             <div className="blogDetailAuthor">
-              <FaUser /> {blog.author || 'Yazar'}
+              <FaUser /> {blog.author || 'Author'}
             </div>
           </div>
           
@@ -116,17 +116,17 @@ export default function BlogDetail() {
                 dangerouslySetInnerHTML={{ __html: blog.content }}
               />
             ) : (
-              <p className="blogDetailText">İçerik bulunamadı.</p>
+              <p className="blogDetailText">Content not available.</p>
             )}
           </div>
 
           <div className="blogDetailFooter">
             <div className="blogDetailStats">
               <span className="blogDetailStat">
-                <FaComment /> 0 Yorum
+                <FaComment /> 0 Comments
               </span>
               <span className="blogDetailStat">
-                <FaHeart /> {Math.floor(Math.random() * 10)} Beğeni
+                <FaHeart /> {Math.floor(Math.random() * 10)} Likes
               </span>
             </div>
             
@@ -142,11 +142,11 @@ export default function BlogDetail() {
                     });
                   } else {
                     navigator.clipboard.writeText(window.location.href);
-                    alert('Link kopyalandı!');
+                    alert('Link copied!');
                   }
                 }}
               >
-                Paylaş
+                Share
               </button>
             </div>
           </div>

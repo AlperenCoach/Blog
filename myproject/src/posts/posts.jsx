@@ -6,12 +6,12 @@ import './posts.css';
 
 const n8nBlog = {
   id: 'n8n-automation-guide',
-  title: 'n8n ile uçtan uca otomasyon kurmak',
+  title: 'Building end-to-end automation with n8n',
   content:
-    'Açık kaynak n8n platformunu kullanarak SaaS entegrasyonları, webhook tabanlı tetikleyiciler ve veri zenginleştirme senaryolarını nasıl sıfırdan kurabileceğinizi anlattım.',
+    'A walkthrough on how I use the open-source n8n platform to build SaaS integrations, webhook-based triggers, and data-enrichment flows from scratch.',
   createdAt: '2024-06-05T10:00:00Z',
-  author: 'Demo Yazar',
-  category: 'Otomasyon',
+  author: 'Demo Author',
+  category: 'Automation',
   imageUrl: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=800&h=400&fit=crop',
 };
 
@@ -19,72 +19,72 @@ const fallbackBlogs = [
   n8nBlog,
   {
     id: 'fallback-react-19',
-    title: 'React 19 yenilikleri ve yükseltme rehberi',
+    title: 'React 19 features and upgrade guide',
     content:
-      'React 19 ile gelen yeni özellikleri ve mevcut projeleri risksiz şekilde nasıl yükseltebileceğinizi adım adım anlatıyorum.',
+      'A step-by-step look at the new capabilities in React 19 and how to upgrade existing projects safely.',
     createdAt: '2024-05-01T09:00:00Z',
-    author: 'Demo Yazar',
+    author: 'Demo Author',
     category: 'React',
     imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop',
   },
   {
     id: 'fallback-clean-architecture',
-    title: '.NET 8 ile temiz mimariyi uygulamak',
+    title: 'Applying clean architecture with .NET 8',
     content:
-      '.NET 8 minimal API yeteneklerini kullanarak temiz mimari katmanlarını nasıl sadeleştirdiğimi bu yazıda anlattım.',
+      'How I simplified clean architecture layers using .NET 8 minimal API capabilities.',
     createdAt: '2024-04-21T12:30:00Z',
-    author: 'Demo Yazar',
+    author: 'Demo Author',
     category: '.NET',
     imageUrl: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=800&h=400&fit=crop',
   },
   {
     id: 'fallback-ux-research-1',
-    title: 'Ürün ekipleri için hızlı UX araştırması',
+    title: 'Rapid UX research for product teams',
     content:
-      'Sprint temposunu bozmadan kullanıcı araştırması yapabilmek için hazırladığım saha notlarını paylaşıyorum.',
+      'Field notes for running user research without slowing the sprint cadence.',
     createdAt: '2024-03-10T07:15:00Z',
-    author: 'Demo Yazar',
-    category: 'Tasarım',
+    author: 'Demo Author',
+    category: 'Design',
     imageUrl: 'https://images.unsplash.com/photo-1481277542470-605612bd2d61?w=800&h=400&fit=crop',
   },
   {
     id: 'fallback-ux-research-2',
-    title: 'Ürün ekipleri için hızlı UX araştırması',
+    title: 'Rapid UX research for product teams',
     content:
-      'Sprint temposunu bozmadan kullanıcı araştırması yapabilmek için hazırladığım saha notlarını paylaşıyorum.',
+      'Field notes for running user research without slowing the sprint cadence.',
     createdAt: '2024-03-10T07:15:00Z',
-    author: 'Demo Yazar',
-    category: 'Tasarım',
+    author: 'Demo Author',
+    category: 'Design',
     imageUrl: 'https://images.unsplash.com/photo-1481277542470-605612bd2d61?w=800&h=400&fit=crop',
   },
   {
     id: 'fallback-ux-research-3',
-    title: 'Ürün ekipleri için hızlı UX araştırması',
+    title: 'Rapid UX research for product teams',
     content:
-      'Sprint temposunu bozmadan kullanıcı araştırması yapabilmek için hazırladığım saha notlarını paylaşıyorum.',
+      'Field notes for running user research without slowing the sprint cadence.',
     createdAt: '2024-03-10T07:15:00Z',
-    author: 'Demo Yazar',
-    category: 'Tasarım',
+    author: 'Demo Author',
+    category: 'Design',
     imageUrl: 'https://images.unsplash.com/photo-1481277542470-605612bd2d61?w=800&h=400&fit=crop',
   },
   {
     id: 'fallback-ux-research-4',
-    title: 'Ürün ekipleri için hızlı UX araştırması',
+    title: 'Rapid UX research for product teams',
     content:
-      'Sprint temposunu bozmadan kullanıcı araştırması yapabilmek için hazırladığım saha notlarını paylaşıyorum.',
+      'Field notes for running user research without slowing the sprint cadence.',
     createdAt: '2024-03-10T07:15:00Z',
-    author: 'Demo Yazar',
-    category: 'Tasarım',
+    author: 'Demo Author',
+    category: 'Design',
     imageUrl: 'https://images.unsplash.com/photo-1481277542470-605612bd2d61?w=800&h=400&fit=crop',
   },
   {
     id: 'fallback-ux-research-5',
-    title: 'Ürün ekipleri için hızlı UX araştırması',
+    title: 'Rapid UX research for product teams',
     content:
-      'Sprint temposunu bozmadan kullanıcı araştırması yapabilmek için hazırladığım saha notlarını paylaşıyorum.',
+      'Field notes for running user research without slowing the sprint cadence.',
     createdAt: '2024-03-10T07:15:00Z',
-    author: 'Demo Yazar',
-    category: 'Tasarım',
+    author: 'Demo Author',
+    category: 'Design',
     imageUrl: 'https://images.unsplash.com/photo-1481277542470-605612bd2d61?w=800&h=400&fit=crop',
   },
 ];
@@ -131,10 +131,10 @@ export default function Posts() {
     setCurrentPage(nextPage);
   };
 
-  // Daha fazla blog var mı kontrolü - güvenli kontrol
+  // Safe guard to check if there are more blogs to display
   const hasMoreBlogs = allBlogs.length > 0 && displayedBlogs.length < allBlogs.length;
 
-  // Resim URL'si yoksa başlığa göre placeholder resim oluştur
+  // Generate a placeholder image if the blog lacks one
   const getImageUrl = (blog) => {
     if (blog.imageUrl) {
       return blog.imageUrl;
@@ -145,9 +145,11 @@ export default function Posts() {
       'typescript': 'https://images.unsplash.com/photo-1516116216624-53e6977beabf?w=800&h=400&fit=crop',
       'net': 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop',
       'mongodb': 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop',
-      'tasarım': 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=400&fit=crop',
+      'tasarim': 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=400&fit=crop',
+      'design': 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=400&fit=crop',
       'web': 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=400&fit=crop',
       'programlama': 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop',
+      'programming': 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop',
     };
     
     const titleLower = blog.title?.toLowerCase() || '';
@@ -160,28 +162,28 @@ export default function Posts() {
     return 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop';
   };
 
-  // Kategori/tag çıkar (başlıktan veya içerikten)
+  // Derive category/tag from the blog title/content when missing
   const getCategory = (blog) => {
-    // Eğer blog'da category varsa onu kullan
+    // Use explicit category if present on the blog
     if (blog.category) return blog.category;
     
-    // Başlığa göre kategori tahmin et
+    // Otherwise infer the category from title keywords
     const titleLower = blog.title?.toLowerCase() || '';
     if (titleLower.includes('react')) return 'React';
     if (titleLower.includes('javascript')) return 'JavaScript';
     if (titleLower.includes('typescript')) return 'TypeScript';
     if (titleLower.includes('net') || titleLower.includes('.net')) return '.NET';
     if (titleLower.includes('mongodb')) return 'MongoDB';
-    if (titleLower.includes('tasarım') || titleLower.includes('design')) return 'Tasarım';
+    if (titleLower.includes('tasarim') || titleLower.includes('design')) return 'Design';
     if (titleLower.includes('web')) return 'Web Development';
     
-    return 'Genel';
+    return 'General';
   };
 
   if (loading) {
     return (
       <div className="posts">
-        <div className="postsLoading">Yükleniyor...</div>
+        <div className="postsLoading">Loading...</div>
       </div>
     );
   }
@@ -190,7 +192,7 @@ export default function Posts() {
     return (
       <div className="posts">
         <div className="postsEmpty">
-          <p>Henüz blog yazısı yok. İlk yazıyı sen ekle!</p>
+          <p>No blog posts yet. Be the first to publish!</p>
         </div>
       </div>
     );
@@ -204,14 +206,14 @@ export default function Posts() {
           <button
             className={`viewButton ${viewMode === 'grid' ? 'active' : ''}`}
             onClick={() => setViewMode('grid')}
-            aria-label="Grid görünümü"
+            aria-label="Grid view"
           >
             <FaTh />
           </button>
           <button
             className={`viewButton ${viewMode === 'list' ? 'active' : ''}`}
             onClick={() => setViewMode('list')}
-            aria-label="Liste görünümü"
+            aria-label="List view"
           >
             <FaList />
           </button>
@@ -260,7 +262,7 @@ export default function Posts() {
                       <path d="M6 21c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="rgba(15, 23, 42, 0.3)" strokeWidth="2" fill="none"/>
                     </svg>
                   </div>
-                  <span className="postCardAuthorName">{blog.author || 'Yazar'}</span>
+                  <span className="postCardAuthorName">{blog.author || 'Author'}</span>
                 </div>
                 
                 <p className="postCardDescription">
@@ -278,7 +280,7 @@ export default function Posts() {
       {allBlogs.length > displayedBlogs.length && (
         <div className="loadMoreContainer">
           <button className="loadMoreButton" onClick={handleLoadMore}>
-            Daha Fazla Yükle ({allBlogs.length - displayedBlogs.length} blog kaldı)
+            Load More ({allBlogs.length - displayedBlogs.length} posts left)
           </button>
         </div>
       )}

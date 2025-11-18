@@ -39,16 +39,16 @@ export default function Write() {
         title: formData.title,
         content: formData.content,
         summary: formData.summary || formData.content.substring(0, 200),
-        category: formData.category || 'Genel',
+        category: formData.category || 'General',
         imageUrl: formData.imageUrl || '',
-        author: user?.username || user?.email || 'Yazar',
+        author: user?.username || user?.email || 'Author',
       };
 
       await createBlog(blogData);
-      setMessage('Blog yazısı başarıyla oluşturuldu!');
+      setMessage('Your blog post was created successfully!');
       setMessageColor('green');
       
-      // Formu temizle
+      // Reset form values
       setFormData({
         title: '',
         content: '',
@@ -57,13 +57,13 @@ export default function Write() {
         imageUrl: '',
       });
 
-      // 2 saniye sonra ana sayfaya yönlendir
+      // Redirect to the homepage after 2 seconds
       setTimeout(() => {
         navigate('/');
       }, 2000);
     } catch (error) {
       console.error('Error creating blog:', error);
-      setMessage(error.response?.data?.message || 'Blog yazısı oluşturulurken bir hata oluştu.');
+      setMessage(error.response?.data?.message || 'Something went wrong while creating the post.');
       setMessageColor('red');
     } finally {
       setLoading(false);
@@ -72,10 +72,9 @@ export default function Write() {
 
   return (
     <section className="page write">
-      <h1>Yeni Yazı Oluştur</h1>
+      <h1>Create a new post</h1>
       <p>
-        Yeni fikirlerini dijital not defterime eklemek için bu formu kullanabilirsin. Gönderilen taslakları
-        sonradan gözden geçirip yayımlıyorum; kısa ve odaklı anlatman yeterli.
+        Use this form to drop fresh ideas into my digital notebook. I review and publish submitted drafts, so keep it concise and focused.
       </p>
       {message && (
         <div style={{ 
@@ -92,28 +91,28 @@ export default function Write() {
       )}
       <form className="writeForm" onSubmit={handleSubmit}>
         <label className="writeField">
-          Başlık
+          Title
           <input 
             type="text" 
             name="title"
-            placeholder="Örn. React Router ile minimal yönlendirme" 
+            placeholder="e.g. Minimal routing with React Router" 
             value={formData.title}
             onChange={handleChange}
             required 
           />
         </label>
         <label className="writeField">
-          Kategori
+          Category
           <input 
             type="text" 
             name="category"
-            placeholder="Örn. React, JavaScript, .NET" 
+            placeholder="e.g. React, JavaScript, .NET" 
             value={formData.category}
             onChange={handleChange}
           />
         </label>
         <label className="writeField">
-          Resim URL (Opsiyonel)
+          Image URL (optional)
           <input 
             type="url" 
             name="imageUrl"
@@ -123,20 +122,20 @@ export default function Write() {
           />
         </label>
         <label className="writeField">
-          Özet
+          Summary
           <textarea 
             name="summary"
-            placeholder="İçeriğin ana fikrini birkaç cümleyle paylaş..." 
+            placeholder="Share the main idea in a couple of sentences..." 
             rows={3}
             value={formData.summary}
             onChange={handleChange}
           />
         </label>
         <label className="writeField">
-          İçerik
+          Content
           <textarea 
             name="content"
-            placeholder="Ana içeriği buraya yaz..." 
+            placeholder="Write the full content here..." 
             rows={8} 
             value={formData.content}
             onChange={handleChange}
@@ -145,7 +144,7 @@ export default function Write() {
         </label>
         <div className="writeActions">
           <button type="submit" disabled={loading}>
-            {loading ? 'Oluşturuluyor...' : 'Taslak Oluştur'}
+            {loading ? 'Publishing...' : 'Create Draft'}
           </button>
           <button 
             type="reset" 
@@ -161,7 +160,7 @@ export default function Write() {
               setMessage('');
             }}
           >
-            Temizle
+            Clear
           </button>
         </div>
       </form>

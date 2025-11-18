@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
 
   useEffect(() => {
-    // Token varsa kullanıcı bilgilerini yükle
+    // Load the user when we already have a token
     if (token) {
       loadUser();
     } else {
@@ -27,8 +27,7 @@ export const AuthProvider = ({ children }) => {
 
   const loadUser = async () => {
     try {
-      // Token'dan kullanıcı bilgilerini çıkar (JWT decode edilebilir veya API'den alınabilir)
-      // Şimdilik localStorage'dan alıyoruz, backend hazır olduğunda API'den alınacak
+      // Ideally decode the token or call the API; for now fall back to localStorage
       const userData = localStorage.getItem('user');
       if (userData) {
         setUser(JSON.parse(userData));
@@ -43,11 +42,11 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      // TODO: Backend hazır olduğunda bu kısım güncellenecek
+      // TODO: Replace with real API call when backend auth is ready
       // const response = await api.post('/auth/login', { email, password });
       // const { token, user } = response.data;
       
-      // Şimdilik mock data
+      // Temporary mock implementation
       const mockToken = 'mock-jwt-token-' + Date.now();
       const mockUser = {
         id: '1',
@@ -65,18 +64,18 @@ export const AuthProvider = ({ children }) => {
       console.error('Login error:', error);
       return { 
         success: false, 
-        error: error.response?.data?.message || 'Giriş yapılırken bir hata oluştu.' 
+        error: error.response?.data?.message || 'Something went wrong while signing in.' 
       };
     }
   };
 
   const signup = async (userData) => {
     try {
-      // TODO: Backend hazır olduğunda bu kısım güncellenecek
+      // TODO: Replace with real API call when backend auth is ready
       // const response = await api.post('/auth/signup', userData);
       // const { token, user } = response.data;
       
-      // Şimdilik mock data
+      // Temporary mock implementation
       const mockToken = 'mock-jwt-token-' + Date.now();
       const mockUser = {
         id: Date.now().toString(),
@@ -94,7 +93,7 @@ export const AuthProvider = ({ children }) => {
       console.error('Signup error:', error);
       return { 
         success: false, 
-        error: error.response?.data?.message || 'Kayıt olurken bir hata oluştu.' 
+        error: error.response?.data?.message || 'Something went wrong while signing up.' 
       };
     }
   };
@@ -104,6 +103,18 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+  };
+
+  const updateProfile = (updates) => {
+    setUser((prev) => {
+      const nextUser = {
+        ...prev,
+        ...updates,
+        updatedAt: new Date().toISOString(),
+      };
+      localStorage.setItem('user', JSON.stringify(nextUser));
+      return nextUser;
+    });
   };
 
   const isAuthenticated = () => {
@@ -117,6 +128,7 @@ export const AuthProvider = ({ children }) => {
     login,
     signup,
     logout,
+    updateProfile,
     isAuthenticated,
   };
 

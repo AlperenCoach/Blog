@@ -3,7 +3,7 @@ import axios from 'axios';
 // API Base URL
 const API_BASE_URL = 'http://localhost:5065/api';
 
-// Axios instance oluştur
+// Create a configured axios instance
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -11,10 +11,10 @@ const api = axios.create({
   },
 });
 
-// Request interceptor (isteğe token eklemek için - gelecekte kullanılabilir)
+// Request interceptor (ready to attach tokens when auth is wired up)
 api.interceptors.request.use(
   (config) => {
-    // Token varsa header'a ekle
+    // Attach token to every request if it exists
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -26,18 +26,18 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor (hata yönetimi için)
+// Response interceptor for centralized error logging
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response) {
-      // Sunucu hatası
+      // Server responded with an error
       console.error('API Error:', error.response.data);
     } else if (error.request) {
-      // İstek gönderildi ama yanıt alınamadı
+      // Request was sent but no response received
       console.error('Network Error:', error.request);
     } else {
-      // İstek hazırlanırken hata oluştu
+      // Something went wrong before the request was sent
       console.error('Error:', error.message);
     }
     return Promise.reject(error);
@@ -47,7 +47,7 @@ api.interceptors.response.use(
 // ==================== BLOG API ====================
 
 /**
- * Tüm blogları getir
+ * Fetch all blogs
  */
 export const getBlogs = async () => {
   try {
@@ -59,7 +59,7 @@ export const getBlogs = async () => {
 };
 
 /**
- * Tek blog getir (ID ile)
+ * Fetch a single blog by id
  */
 export const getBlogById = async (id) => {
   try {
@@ -71,7 +71,7 @@ export const getBlogById = async (id) => {
 };
 
 /**
- * Yeni blog oluştur
+ * Create a new blog
  */
 export const createBlog = async (blogData) => {
   try {
@@ -83,7 +83,7 @@ export const createBlog = async (blogData) => {
 };
 
 /**
- * Blog güncelle
+ * Update an existing blog
  */
 export const updateBlog = async (id, blogData) => {
   try {
@@ -95,7 +95,7 @@ export const updateBlog = async (id, blogData) => {
 };
 
 /**
- * Blog sil
+ * Delete a blog
  */
 export const deleteBlog = async (id) => {
   try {
@@ -109,7 +109,7 @@ export const deleteBlog = async (id) => {
 // ==================== USER API ====================
 
 /**
- * Tüm kullanıcıları getir
+ * Fetch all users
  */
 export const getUsers = async () => {
   try {
@@ -121,7 +121,7 @@ export const getUsers = async () => {
 };
 
 /**
- * Tek kullanıcı getir (ID ile)
+ * Fetch a single user by id
  */
 export const getUserById = async (id) => {
   try {
@@ -133,7 +133,7 @@ export const getUserById = async (id) => {
 };
 
 /**
- * Email ile kullanıcı getir
+ * Fetch user by email
  */
 export const getUserByEmail = async (email) => {
   try {
@@ -145,7 +145,7 @@ export const getUserByEmail = async (email) => {
 };
 
 /**
- * Yeni kullanıcı oluştur
+ * Create a new user
  */
 export const createUser = async (userData) => {
   try {
@@ -157,7 +157,7 @@ export const createUser = async (userData) => {
 };
 
 /**
- * Kullanıcı güncelle
+ * Update an existing user
  */
 export const updateUser = async (id, userData) => {
   try {
@@ -169,7 +169,7 @@ export const updateUser = async (id, userData) => {
 };
 
 /**
- * Kullanıcı sil
+ * Delete a user
  */
 export const deleteUser = async (id) => {
   try {
@@ -181,7 +181,7 @@ export const deleteUser = async (id) => {
 };
 
 /**
- * Kullanıcı aktif/pasif durumunu değiştir
+ * Toggle user active/passive state
  */
 export const toggleUserActive = async (id) => {
   try {

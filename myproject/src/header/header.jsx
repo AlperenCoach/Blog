@@ -28,7 +28,7 @@ export default function Header() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTextIndex((prevIndex) => (prevIndex + 1) % sliderTexts.length);
-    }, 10000); // 10 saniye
+    }, 10000); // 10 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -45,7 +45,7 @@ export default function Header() {
         <img
           className="headerImg"
           src={headerImage}
-          alt="Orman patikasında yürüyen kişi"
+          alt="Person walking along a forest trail"
           style={{ transform: `translateY(${parallaxOffset * -1}px) scale(1.08) skewY(3deg)` }}
         />
       </div>

@@ -8,11 +8,13 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Write from './pages/Write';
 import SlidingText from './slidingtext/slidingtext';
-import Footer from './footer/footer';
+import Footer from './components/Footer.jsx';
 import Login from './pages/login';
 import Signup from './pages/signup';
 import N8nAutomation from './pages/N8nAutomation';
 import ProtectedRoute from './components/ProtectedRoute';
+import MyProfile from './pages/myProfile';
+import EditProfile from './pages/EditProfile.jsx';
 
 const HomePage = () => (
   <>
@@ -39,6 +41,22 @@ function App() {
               <Write />
             </ProtectedRoute>
           } 
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <MyProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile/edit"
+          element={
+            <ProtectedRoute>
+              <EditProfile />
+            </ProtectedRoute>
+          }
         />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />

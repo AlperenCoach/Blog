@@ -29,14 +29,13 @@
 
 .topLeft {
   justify-self: start;
-  margin-left: -200px;
 }
 
 .topCenter {
   justify-self: center;
 }
 
-/* Hamburger Button - Sadece mobilde görünür */
+/* Hamburger button - visible only on mobile */
 .hamburgerButton {
   display: none;
   flex-direction: column;
@@ -75,7 +74,32 @@
 .topRight {
   justify-self: end;
   gap: 0.75rem;
-  margin-right: -200px;
+}
+
+.topAvatarWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topAvatarButton {
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  transition: transform 0.2s ease;
+}
+
+.topAvatarButton:focus-visible {
+  outline: 2px solid rgba(56, 189, 248, 0.6);
+  outline-offset: 6px;
+  border-radius: 50%;
+}
+
+.topAvatarButton:hover {
+  transform: translateY(-2px) scale(1.01);
 }
 
 .searchButton {
@@ -195,6 +219,80 @@
   margin-left: 0.5rem;
 }
 
+.avatarDropdown {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  right: 0;
+  min-width: 200px;
+  background-color: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25);
+  padding: 0.85rem;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 50;
+}
+
+.avatarDropdown.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.avatarDropdownHeader {
+  padding: 0.25rem 0.35rem 0.5rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  margin-bottom: 0.35rem;
+}
+
+.avatarGreeting {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.avatarUser {
+  margin: 0.1rem 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.avatarDropdownItem {
+  width: 100%;
+  border: none;
+  background: rgba(148, 163, 184, 0.12);
+  border-radius: 12px;
+  padding: 0.65rem 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  color: #0f172a;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.avatarDropdownItem:hover {
+  background: rgba(56, 189, 248, 0.2);
+  transform: translateX(2px);
+}
+
+.avatarDropdownItem.logout {
+  background: rgba(248, 113, 113, 0.15);
+  color: #b91c1c;
+}
+
+.avatarDropdownItem.logout:hover {
+  background: rgba(248, 113, 113, 0.3);
+  color: #7f1d1d;
+}
+
 @media (max-width: 1024px) {
   .topInner {
     padding: 0 1.5rem;
@@ -216,13 +314,13 @@
     align-items: center;
   }
 
-  /* Hamburger butonu mobilde görünür */
+  /* Hamburger button becomes visible on mobile */
   .hamburgerButton {
     display: flex;
     justify-self: start;
   }
 
-  /* Menü mobilde varsayılan olarak gizli */
+  /* Menu is hidden by default on mobile */
   .topCenter {
     position: absolute;
     top: 100%;
@@ -236,7 +334,7 @@
     z-index: 15;
   }
 
-  /* Menü açık olduğunda göster */
+  /* Expanded state for the mobile menu */
   .topCenter.menuOpen {
     max-height: 500px;
     padding: 1.5rem 0;
@@ -594,18 +692,11 @@
 }
 
 
-.topAvatarButton {
-  margin-top: 10px;
-  margin-right: 10px;
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  z-index: 20;
-  }
 
 
 
+
+
+
+
+  

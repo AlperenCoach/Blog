@@ -1,0 +1,129 @@
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import './pages.css';
+
+export default function EditProfile() {
+  const navigate = useNavigate();
+  const { user, updateProfile } = useAuth();
+
+  const [formData, setFormData] = useState({
+    fullName: user?.fullName || '',
+    username: user?.username || '',
+    email: user?.email || '',
+    phoneNumber: user?.phoneNumber || '',
+    profilePicture: user?.profilePicture || '',
+    bio: user?.bio || '',
+  });
+  const [status, setStatus] = useState({ type: '', message: '' });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (status.message) {
+      setStatus({ type: '', message: '' });
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    updateProfile(formData);
+    setStatus({ type: 'success', message: 'Profile updated successfully.' });
+    setTimeout(() => navigate('/profile'), 1200);
+  };
+
+  return (
+    <section className="page">
+      <header className="profileHeader">
+        <div>
+          <p className="profileEyebrow">Account settings</p>
+          <h1>Edit Profile</h1>
+        </div>
+        <Link className="profileEditLink profileEditLink--ghost" to="/profile">
+          Back to profile
+        </Link>
+      </header>
+
+      {status.message && (
+        <div className={`profileToast profileToast--${status.type}`}>
+          {status.message}
+        </div>
+      )}
+
+      <form className="profileForm" onSubmit={handleSubmit}>
+        <div className="profileFormGrid">
+          <label className="profileFormField">
+            Full name
+            <input
+              type="text"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+              placeholder="Your full name"
+            />
+          </label>
+          <label className="profileFormField">
+            Username
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="Preferred username"
+            />
+          </label>
+          <label className="profileFormField">
+            Email
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="name@example.com"
+              required
+            />
+          </label>
+          <label className="profileFormField">
+            Phone number
+            <input
+              type="tel"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              placeholder="+90 555 555 55 55"
+            />
+          </label>
+          <label className="profileFormField">
+            Profile picture URL
+            <input
+              type="url"
+              name="profilePicture"
+              value={formData.profilePicture}
+              onChange={handleChange}
+              placeholder="https://images.unsplash.com/..."
+            />
+          </label>
+        </div>
+
+        <label className="profileFormField">
+          Short bio
+          <textarea
+            name="bio"
+            rows="4"
+            value={formData.bio}
+            onChange={handleChange}
+            placeholder="Share a short introduction..."
+          />
+        </label>
+
+        <div className="profileFormActions">
+          <button type="button" className="ghost" onClick={() => navigate('/profile')}>
+            Cancel
+          </button>
+          <button type="submit">Save changes</button>
+        </div>
+      </form>
+    </section>
+  );
+}
+

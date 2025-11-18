@@ -20,13 +20,13 @@ export default function Login() {
     const isPhone = /^[0-9+\s-]*$/.test(value) && value.length > 9;
 
     if (isEmail) {
-      setMessage('Email algılandı');
+      setMessage('Email detected');
       setMessageColor('green');
     } else if (isPhone) {
-      setMessage('Telefon numarası algılandı');
+      setMessage('Phone number detected');
       setMessageColor('blue');
     } else if (value.length > 0) {
-      setMessage('Geçersiz format');
+      setMessage('Invalid format');
       setMessageColor('red');
     } else {
       setMessage('');
@@ -41,7 +41,7 @@ export default function Login() {
 
     const isEmail = inputValue.includes('@') && inputValue.includes('.');
     if (!isEmail) {
-      setMessage('Lütfen geçerli bir email adresi giriniz.');
+      setMessage('Please enter a valid email address.');
       setMessageColor('red');
       setLoading(false);
       return;
@@ -52,11 +52,11 @@ export default function Login() {
       if (result.success) {
         navigate('/');
       } else {
-        setMessage(result.error || 'Giriş yapılırken bir hata oluştu.');
+        setMessage(result.error || 'Something went wrong while signing in.');
         setMessageColor('red');
       }
     } catch (error) {
-      setMessage('Giriş yapılırken bir hata oluştu.');
+      setMessage('Something went wrong while signing in.');
       setMessageColor('red');
     } finally {
       setLoading(false);
@@ -68,26 +68,26 @@ export default function Login() {
       <h1>Login</h1>
       <form className="writeForm" onSubmit={handleSubmit}>
         <label className="writeFieldLogin" htmlFor="contact">
-          Email veya Telefon Numaranız
+          Email or phone number
           <input
             type="text"
             id="contact"
             name="contact"
-            placeholder="Email veya Telefon Numaranızı Giriniz"
+            placeholder="Enter your email or phone number"
             value={inputValue}
             onChange={(e) => validateInput(e.target.value)}
             required
             pattern="^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})|([0-9+\s-]{10,15})$"
-            title="Lütfen geçerli bir email adresi veya telefon numarası giriniz."
+            title="Please enter a valid email address or phone number."
           />
         </label>
         <label className="writeFieldLogin" htmlFor="password">
-          Şifre
+          Password
           <input
             type="password"
             id="password"
             name="password"
-            placeholder="Şifre"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -116,11 +116,11 @@ export default function Login() {
         )}
         <div className="writeActions">
           <button type="submit" disabled={loading}>
-            {loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
           <button type="button" className="google-login-btn">
             <FaGoogle size={18} style={{ marginRight: '8px' }} />
-            Google ile Giriş Yap
+            Sign in with Google
           </button>
         </div>
         <p
@@ -131,7 +131,7 @@ export default function Login() {
             fontFamily: "'Poppins', sans-serif",
           }}
         >
-          Hesabınız yok mu? <Link to="/signup" style={{ color: '#2563eb' }}>Kayıt Ol</Link>
+          Don’t have an account? <Link to="/signup" style={{ color: '#2563eb' }}>Sign Up</Link>
         </p>
       </form>
     </section>

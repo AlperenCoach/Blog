@@ -1,8 +1,9 @@
 import './slidingtext.css';
 
 const texts = [
-  'REACT • TYPESCRIPT • NEXT.JS • TAILWIND • PRISMA • TESTING LIBRARY •',
-  'CYBERSECURITY • WEB DEVELOPMENT • AI • BLOCKCHAIN • IOT •',
+  'REACT • NEXT.JS • TYPESCRIPT • NODE.JS • MONGODB • .NET •',
+  'DOCKER • AWS • GIT • TAILWIND • PRISMA • VITE •',
+  'AI/ML • BLOCKCHAIN • CYBERSECURITY • DEVOPS • FULL STACK •',
 ];
 
 export default function SlidingText() {

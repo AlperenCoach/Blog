@@ -1,20 +1,40 @@
 body{
   margin: 0;
   padding: 0;
+  font-family: 'Poppins', sans-serif;
 }
 
 .header {
   position: relative;
   margin-top: 50px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f8f9fb 0%, #e0e4ec 100%);
+}
+
+.headerImgWrapper {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+}
+
+.headerImgWrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.65));
+  pointer-events: none;
+  z-index: 1;
 }
 
 .headerImg {
-  width: 100vw;
-  height: 500px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   display: block;
-  margin: 0 auto;
-  padding: 0 auto;
+  will-change: transform;
+  transition: transform 0.15s ease-out;
+  overflow: hidden;
 }
 
 .headerTitles {
@@ -25,19 +45,42 @@ body{
   align-items: center;
   justify-content: center;
   gap: 1.3rem;
-  font-family: 'Lora', serif;
+  font-family: 'Poppins', sans-serif;
   color: #ffffff;
   text-align: center;
   pointer-events: none;
+  z-index: 2;
+
 }
 
 .headerTitleSm {
-  font-family: 'Sirin Stencil', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-style: italic;
   font-size: clamp(2.8rem, 8vw, 6rem);
   letter-spacing: clamp(0.12em, 0.7vw, 0.3em);
   text-transform: uppercase;
   text-shadow: 0 16px 45px rgba(15, 23, 42, 0.35);
+}
+
+.headerSliderText {
+  font-family: 'Poppins', sans-serif;
+  display: inline-block;
+  animation: fadeInOut 0.8s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .headerButton {

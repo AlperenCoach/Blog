@@ -44,6 +44,18 @@ api.interceptors.response.use(
   }
 );
 
+// ==================== AUTH API ====================
+
+export const loginUser = async (credentials) => {
+  const response = await api.post('/auth/login', credentials);
+  return response.data;
+};
+
+export const signupUser = async (payload) => {
+  const response = await api.post('/auth/signup', payload);
+  return response.data;
+};
+
 // ==================== BLOG API ====================
 
 /**
@@ -186,6 +198,44 @@ export const deleteUser = async (id) => {
 export const toggleUserActive = async (id) => {
   try {
     const response = await api.patch(`/user/${id}/activate`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ==================== CONTACT API ====================
+
+/**
+ * Send a contact message
+ */
+export const sendContactMessage = async (contactData) => {
+  try {
+    const response = await api.post('/contact', contactData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Get all contact messages (Admin only)
+ */
+export const getContactMessages = async () => {
+  try {
+    const response = await api.get('/contact');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Get a single contact message by id
+ */
+export const getContactMessageById = async (id) => {
+  try {
+    const response = await api.get(`/contact/${id}`);
     return response.data;
   } catch (error) {
     throw error;

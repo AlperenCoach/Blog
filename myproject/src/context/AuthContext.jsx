@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import api from '../services/api';
+import { loginUser, signupUser, getUserById, updateUser } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -27,10 +27,25 @@ export const AuthProvider = ({ children }) => {
 
   const loadUser = async () => {
     try {
-      // Ideally decode the token or call the API; for now fall back to localStorage
+      // Try to get user from API if we have user ID in localStorage
       const userData = localStorage.getItem('user');
       if (userData) {
-        setUser(JSON.parse(userData));
+        const parsedUser = JSON.parse(userData);
+        if (parsedUser?.id) {
+          try {
+            // Try to fetch fresh user data from API
+            const freshUser = await getUserById(parsedUser.id);
+            setUser(freshUser);
+            localStorage.setItem('user', JSON.stringify(freshUser));
+            return;
+          } catch (apiError) {
+            // If API call fails, use cached data
+            console.warn('Could not fetch user from API, using cached data:', apiError);
+            setUser(parsedUser);
+          }
+        } else {
+          setUser(parsedUser);
+        }
       }
     } catch (error) {
       console.error('Error loading user:', error);
@@ -42,60 +57,38 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      // TODO: Replace with real API call when backend auth is ready
-      // const response = await api.post('/auth/login', { email, password });
-      // const { token, user } = response.data;
-      
-      // Temporary mock implementation
-      const mockToken = 'mock-jwt-token-' + Date.now();
-      const mockUser = {
-        id: '1',
-        email: email,
-        username: email.split('@')[0],
-      };
-
-      setToken(mockToken);
-      setUser(mockUser);
-      localStorage.setItem('token', mockToken);
-      localStorage.setItem('user', JSON.stringify(mockUser));
-
+      const response = await loginUser({ email, password });
+      handleAuthSuccess(response);
       return { success: true };
     } catch (error) {
       console.error('Login error:', error);
-      return { 
-        success: false, 
-        error: error.response?.data?.message || 'Something went wrong while signing in.' 
+      return {
+        success: false,
+        error: error.response?.data || 'Something went wrong while signing in.',
       };
     }
   };
 
   const signup = async (userData) => {
     try {
-      // TODO: Replace with real API call when backend auth is ready
-      // const response = await api.post('/auth/signup', userData);
-      // const { token, user } = response.data;
-      
-      // Temporary mock implementation
-      const mockToken = 'mock-jwt-token-' + Date.now();
-      const mockUser = {
-        id: Date.now().toString(),
-        email: userData.email,
-        username: userData.username,
-      };
-
-      setToken(mockToken);
-      setUser(mockUser);
-      localStorage.setItem('token', mockToken);
-      localStorage.setItem('user', JSON.stringify(mockUser));
-
+      const response = await signupUser(userData);
+      handleAuthSuccess(response);
       return { success: true };
     } catch (error) {
       console.error('Signup error:', error);
-      return { 
-        success: false, 
-        error: error.response?.data?.message || 'Something went wrong while signing up.' 
+      return {
+        success: false,
+        error: error.response?.data || 'Something went wrong while signing up.',
       };
     }
+  };
+
+  const handleAuthSuccess = (response) => {
+    const { token: authToken, user: authUser } = response;
+    setToken(authToken);
+    setUser(authUser);
+    localStorage.setItem('token', authToken);
+    localStorage.setItem('user', JSON.stringify(authUser));
   };
 
   const logout = () => {
@@ -105,16 +98,24 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
   };
 
-  const updateProfile = (updates) => {
-    setUser((prev) => {
-      const nextUser = {
-        ...prev,
-        ...updates,
-        updatedAt: new Date().toISOString(),
+  const updateProfile = async (updates) => {
+    if (!user?.id) {
+      console.error('Cannot update profile: no user ID');
+      return { success: false, error: 'User not found' };
+    }
+
+    try {
+      const updatedUser = await updateUser(user.id, updates);
+      setUser(updatedUser);
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      return { success: true };
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      return {
+        success: false,
+        error: error.response?.data || 'Failed to update profile',
       };
-      localStorage.setItem('user', JSON.stringify(nextUser));
-      return nextUser;
-    });
+    }
   };
 
   const isAuthenticated = () => {

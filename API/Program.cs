@@ -13,23 +13,37 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using API.Data;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => {
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.WriteIndented = true;
+    });
 
 // MongoDB Configuration
 builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options => {
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo {
+        Title = "Blog API",
+        Version = "v1",
+        Description = "Blog API Documentation - Blog, User, Auth, and Contact endpoints",
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact {
+            Name = "API Support"
+        }
+    });
+});
 
 // CORS configuration for React frontend
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+        policy.WithOrigins("http://localhost:5173/", "http://localhost:3000/")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -43,6 +57,15 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
+    // Scalar API Documentation
+    app.MapScalarApiReference(options => {
+        options
+            .WithTitle("Blog API Documentation")
+            .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
+            .WithTheme(ScalarTheme.BluePlanet)
+            .WithOpenApiSpecUrl("/swagger/v1/swagger.json");
+    });
 }
 
 // HTTPS Redirection - only in production or when HTTPS is explicitly configured
@@ -60,4 +83,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+
+
+
+
 

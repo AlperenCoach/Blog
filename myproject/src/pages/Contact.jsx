@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { sendContactMessage } from '../services/api';
 import './pages.css';
 
 export default function Contact() {
@@ -29,13 +30,9 @@ export default function Contact() {
     setMessage('');
 
     try {
-      // TODO: API integration will replace this mock when backend is ready
-      // await api.post('/contact', formData);
-
-      // Temporary mock response
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await sendContactMessage(formData);
       
-      setMessage('Your message has been sent! I’ll get back to you shortly.');
+      setMessage('Your message has been sent! I'll get back to you shortly.');
       setMessageColor('green');
       
       // Reset form

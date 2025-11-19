@@ -8,11 +8,13 @@ export default function Signup() {
   const navigate = useNavigate();
   const { signup } = useAuth();
   const [formData, setFormData] = useState({
+    fullName: '',
     username: '',
     phoneNumber: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    profilePicture: '',
   });
   const [message, setMessage] = useState('');
   const [messageColor, setMessageColor] = useState('');
@@ -51,10 +53,12 @@ export default function Signup() {
 
     try {
       const result = await signup({
+        fullName: formData.fullName,
         username: formData.username,
         email: formData.email,
         phoneNumber: formData.phoneNumber,
         password: formData.password,
+        profilePicture: formData.profilePicture,
       });
 
       if (result.success) {
@@ -76,6 +80,17 @@ export default function Signup() {
     <section className="page">
       <h1>Signup</h1>
       <form className="writeForm" onSubmit={handleSubmit}>
+        <label className="writeField" htmlFor="fullName">
+          Full name
+          <input
+            type="text"
+            id="fullName"
+            name="fullName"
+            placeholder="Full name"
+            value={formData.fullName}
+            onChange={handleChange}
+          />
+        </label>
         <label className="writeField" htmlFor="username">
           Username
           <input 
@@ -110,6 +125,17 @@ export default function Signup() {
             value={formData.email}
             onChange={handleChange}
             required 
+          />
+        </label>
+        <label className="writeField" htmlFor="profilePicture">
+          Profile picture URL
+          <input 
+            type="url" 
+            id="profilePicture" 
+            name="profilePicture" 
+            placeholder="https://images.unsplash.com/..." 
+            value={formData.profilePicture}
+            onChange={handleChange}
           />
         </label>
         <label className="writeField" htmlFor="password">

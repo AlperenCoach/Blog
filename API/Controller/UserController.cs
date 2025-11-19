@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using API.Models;
 using API.Data;
+using API.Utils;
 using MongoDB.Driver;
 
 namespace API.Controller {
@@ -27,6 +28,8 @@ namespace API.Controller {
                     u.Username,
                     u.Email,
                     u.FullName,
+                    u.PhoneNumber,
+                    u.Bio,
                     u.ProfilePicture,
                     u.IsActive,
                     u.CreatedAt,
@@ -54,6 +57,8 @@ namespace API.Controller {
                     user.Username,
                     user.Email,
                     user.FullName,
+                    user.PhoneNumber,
+                    user.Bio,
                     user.ProfilePicture,
                     user.IsActive,
                     user.CreatedAt,
@@ -81,6 +86,8 @@ namespace API.Controller {
                     user.Username,
                     user.Email,
                     user.FullName,
+                    user.PhoneNumber,
+                    user.Bio,
                     user.ProfilePicture,
                     user.IsActive,
                     user.CreatedAt,
@@ -117,6 +124,7 @@ namespace API.Controller {
                 user.CreatedAt = DateTime.Now;
                 user.UpdatedAt = DateTime.Now;
                 user.IsActive = true;
+                user.Password = PasswordHelper.Hash(user.Password);
 
                 await _context.Users.InsertOneAsync(user);
                 
@@ -126,6 +134,8 @@ namespace API.Controller {
                     user.Username,
                     user.Email,
                     user.FullName,
+                    user.PhoneNumber,
+                    user.Bio,
                     user.ProfilePicture,
                     user.IsActive,
                     user.CreatedAt,
@@ -170,14 +180,31 @@ namespace API.Controller {
                 }
 
                 user.Id = id;
-                user.UpdatedAt = DateTime.Now;
-                // Şifre değişmediyse eski şifreyi koru
+                user.CreatedAt = existingUser.CreatedAt; // Preserve original creation date
+                user.UpdatedAt = DateTime.UtcNow;
                 if (string.IsNullOrEmpty(user.Password)) {
                     user.Password = existingUser.Password;
+                } else {
+                    user.Password = PasswordHelper.Hash(user.Password);
                 }
 
                 await _context.Users.ReplaceOneAsync(u => u.Id == id, user);
-                return NoContent();
+                
+                // Şifreyi response'dan çıkar
+                var userWithoutPassword = new {
+                    user.Id,
+                    user.Username,
+                    user.Email,
+                    user.FullName,
+                    user.PhoneNumber,
+                    user.Bio,
+                    user.ProfilePicture,
+                    user.IsActive,
+                    user.CreatedAt,
+                    user.UpdatedAt
+                };
+                
+                return Ok(userWithoutPassword);
             }
             catch (Exception ex) {
                 _logger.LogError(ex, "Error updating user with id {Id}", id);

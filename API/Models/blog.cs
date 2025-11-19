@@ -16,6 +16,12 @@ namespace API.Models {
         [BsonElement("author")]
         public string Author { get; set; } = string.Empty;
         
+        [BsonElement("summary")]
+        public string? Summary { get; set; }
+        
+        [BsonElement("category")]
+        public string? Category { get; set; }
+        
         [BsonElement("imageUrl")]
         public string? ImageUrl { get; set; }
         

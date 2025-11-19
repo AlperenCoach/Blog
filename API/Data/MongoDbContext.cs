@@ -19,6 +19,7 @@ namespace API.Data {
 
         public IMongoCollection<Blog> Blogs => _database.GetCollection<Blog>("blogs");
         public IMongoCollection<User> Users => _database.GetCollection<User>("users");
+        public IMongoCollection<ContactMessage> ContactMessages => _database.GetCollection<ContactMessage>("contactMessages");
     }
 }
 

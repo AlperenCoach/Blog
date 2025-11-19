@@ -19,6 +19,12 @@ namespace API.Models {
         [BsonElement("fullName")]
         public string FullName { get; set; } = string.Empty;
         
+        [BsonElement("phoneNumber")]
+        public string? PhoneNumber { get; set; }
+        
+        [BsonElement("bio")]
+        public string? Bio { get; set; }
+        
         [BsonElement("profilePicture")]
         public string ProfilePicture { get; set; } = string.Empty;
         

@@ -25,11 +25,17 @@ export default function EditProfile() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    updateProfile(formData);
-    setStatus({ type: 'success', message: 'Profile updated successfully.' });
-    setTimeout(() => navigate('/profile'), 1200);
+    setStatus({ type: '', message: '' });
+    
+    const result = await updateProfile(formData);
+    if (result.success) {
+      setStatus({ type: 'success', message: 'Profile updated successfully.' });
+      setTimeout(() => navigate('/profile'), 1200);
+    } else {
+      setStatus({ type: 'error', message: result.error || 'Failed to update profile.' });
+    }
   };
 
   return (

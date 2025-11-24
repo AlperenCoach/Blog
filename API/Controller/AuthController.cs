@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using API.Models;
 using API.Data;
+using API.Services;
 using API.Utils;
 using MongoDB.Driver;
 using System.Linq;
@@ -12,42 +13,59 @@ namespace API.Controller {
     public class AuthController : ControllerBase {
         private readonly MongoDbContext _context;
         private readonly ILogger<AuthController> _logger;
+        private readonly JwtService _jwtService;
 
-        public AuthController(MongoDbContext context, ILogger<AuthController> logger) {
+        public AuthController(MongoDbContext context, ILogger<AuthController> logger, JwtService jwtService) {
             _context = context;
             _logger = logger;
+            _jwtService = jwtService;
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request) {
+            if (request == null) {
+                return BadRequest(new { message = "Request body cannot be null." });
+            }
             if (!ModelState.IsValid) {
-                return BadRequest(ModelState);
+                var errors = ModelState
+                    .Where(x => x.Value != null && x.Value.Errors.Count > 0)
+                    .SelectMany(x => x.Value!.Errors.Select(e => e.ErrorMessage))
+                    .ToList();
+                return BadRequest(new { message = string.Join(" ", errors) });
             }
 
             try {
                 var user = await _context.Users.Find(u => u.Email == request.Email).FirstOrDefaultAsync();
                 if (user == null) {
-                    return Unauthorized("Invalid email or password.");
+                    return Unauthorized(new { message = "Invalid email or password." });
                 }
 
                 if (!PasswordHelper.Verify(request.Password, user.Password)) {
-                    return Unauthorized("Invalid email or password.");
+                    return Unauthorized(new { message = "Invalid email or password." });
                 }
 
-                return Ok(BuildAuthResponse(user));
+                if (!user.IsActive) {
+                    return Unauthorized(new { message = "Account is inactive." });
+                }
+
+                var token = _jwtService.GenerateToken(user);
+                return Ok(BuildAuthResponse(user, token));
             }
             catch (Exception ex) {
                 _logger.LogError(ex, "Error logging in user {Email}", request.Email);
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, new { message = "Internal server error" });
             }
         }
 
         [HttpPost("signup")]
         public async Task<IActionResult> Signup([FromBody] SignupRequest request) {
+            if (request == null) {
+                return BadRequest(new { message = "Request body cannot be null." });
+            }
             if (!ModelState.IsValid) {
                 var errors = ModelState
-                    .Where(x => x.Value?.Errors.Count > 0)
-                    .SelectMany(x => x.Value.Errors.Select(e => e.ErrorMessage))
+                    .Where(x => x.Value != null && x.Value.Errors.Count > 0)
+                    .SelectMany(x => x.Value!.Errors.Select(e => e.ErrorMessage))
                     .ToList();
                 return BadRequest(new { message = string.Join(" ", errors) });
             }
@@ -88,7 +106,8 @@ namespace API.Controller {
 
                 await _context.Users.InsertOneAsync(user);
 
-                return Ok(BuildAuthResponse(user));
+                var token = _jwtService.GenerateToken(user);
+                return Ok(BuildAuthResponse(user, token));
             }
             catch (Exception ex) {
                 _logger.LogError(ex, "Error signing up user {Email}", request.Email);
@@ -96,20 +115,20 @@ namespace API.Controller {
             }
         }
 
-        private static AuthResponse BuildAuthResponse(User user) {
+        private static AuthResponse BuildAuthResponse(User user, string token) {
             return new AuthResponse {
-                Token = Convert.ToBase64String(Guid.NewGuid().ToByteArray()),
-                User = new {
-                    user.Id,
-                    user.Username,
-                    user.Email,
-                    user.FullName,
-                    user.PhoneNumber,
-                    user.Bio,
-                    user.ProfilePicture,
-                    user.IsActive,
-                    user.CreatedAt,
-                    user.UpdatedAt
+                Token = token,
+                User = new UserResponse {
+                    Id = user.Id,
+                    Username = user.Username,
+                    Email = user.Email,
+                    FullName = user.FullName,
+                    PhoneNumber = user.PhoneNumber,
+                    Bio = user.Bio,
+                    ProfilePicture = user.ProfilePicture,
+                    IsActive = user.IsActive,
+                    CreatedAt = user.CreatedAt,
+                    UpdatedAt = user.UpdatedAt
                 }
             };
         }

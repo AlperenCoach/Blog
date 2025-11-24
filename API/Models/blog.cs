@@ -16,6 +16,9 @@ namespace API.Models {
         [BsonElement("author")]
         public string Author { get; set; } = string.Empty;
         
+        [BsonElement("authorId")]
+        public string? AuthorId { get; set; }
+        
         [BsonElement("summary")]
         public string? Summary { get; set; }
         

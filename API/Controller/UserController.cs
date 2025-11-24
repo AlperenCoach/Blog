@@ -4,6 +4,7 @@ using API.Models;
 using API.Data;
 using API.Utils;
 using MongoDB.Driver;
+using System.Linq;
 
 namespace API.Controller {
     [ApiController]
@@ -23,17 +24,17 @@ namespace API.Controller {
             try {
                 var users = await _context.Users.Find(_ => true).ToListAsync();
                 // Şifreleri response'dan çıkar
-                var usersWithoutPassword = users.Select(u => new {
-                    u.Id,
-                    u.Username,
-                    u.Email,
-                    u.FullName,
-                    u.PhoneNumber,
-                    u.Bio,
-                    u.ProfilePicture,
-                    u.IsActive,
-                    u.CreatedAt,
-                    u.UpdatedAt
+                var usersWithoutPassword = users.Select(u => new UserResponse {
+                    Id = u.Id,
+                    Username = u.Username,
+                    Email = u.Email,
+                    FullName = u.FullName,
+                    PhoneNumber = u.PhoneNumber,
+                    Bio = u.Bio,
+                    ProfilePicture = u.ProfilePicture,
+                    IsActive = u.IsActive,
+                    CreatedAt = u.CreatedAt,
+                    UpdatedAt = u.UpdatedAt
                 });
                 return Ok(usersWithoutPassword);
             }
@@ -52,17 +53,17 @@ namespace API.Controller {
                     return NotFound();
                 }
                 // Şifreyi response'dan çıkar
-                var userWithoutPassword = new {
-                    user.Id,
-                    user.Username,
-                    user.Email,
-                    user.FullName,
-                    user.PhoneNumber,
-                    user.Bio,
-                    user.ProfilePicture,
-                    user.IsActive,
-                    user.CreatedAt,
-                    user.UpdatedAt
+                var userWithoutPassword = new UserResponse {
+                    Id = user.Id,
+                    Username = user.Username,
+                    Email = user.Email,
+                    FullName = user.FullName,
+                    PhoneNumber = user.PhoneNumber,
+                    Bio = user.Bio,
+                    ProfilePicture = user.ProfilePicture,
+                    IsActive = user.IsActive,
+                    CreatedAt = user.CreatedAt,
+                    UpdatedAt = user.UpdatedAt
                 };
                 return Ok(userWithoutPassword);
             }
@@ -78,26 +79,26 @@ namespace API.Controller {
             try {
                 var user = await _context.Users.Find(u => u.Email == email).FirstOrDefaultAsync();
                 if (user == null) {
-                    return NotFound();
+                    return NotFound(new { message = "User not found." });
                 }
                 // Şifreyi response'dan çıkar
-                var userWithoutPassword = new {
-                    user.Id,
-                    user.Username,
-                    user.Email,
-                    user.FullName,
-                    user.PhoneNumber,
-                    user.Bio,
-                    user.ProfilePicture,
-                    user.IsActive,
-                    user.CreatedAt,
-                    user.UpdatedAt
+                var userResponse = new UserResponse {
+                    Id = user.Id,
+                    Username = user.Username,
+                    Email = user.Email,
+                    FullName = user.FullName,
+                    PhoneNumber = user.PhoneNumber,
+                    Bio = user.Bio,
+                    ProfilePicture = user.ProfilePicture,
+                    IsActive = user.IsActive,
+                    CreatedAt = user.CreatedAt,
+                    UpdatedAt = user.UpdatedAt
                 };
-                return Ok(userWithoutPassword);
+                return Ok(userResponse);
             }
             catch (Exception ex) {
                 _logger.LogError(ex, "Error getting user with email {Email}", email);
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, new { message = "Internal server error" });
             }
         }
 
@@ -150,65 +151,73 @@ namespace API.Controller {
             }
         }
 
-        // PUT: api/user/{id}
+        // PUT: api/user/{id} - Profile Update (EditProfile)
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(string id, [FromBody] User user) {
+        public async Task<IActionResult> Put(string id, [FromBody] EditProfileRequest request) {
             try {
+                if (request == null) {
+                    return BadRequest(new { message = "Request body cannot be null." });
+                }
+
                 if (!ModelState.IsValid) {
-                    return BadRequest(ModelState);
+                    var errors = ModelState
+                        .Where(x => x.Value != null && x.Value.Errors.Count > 0)
+                        .SelectMany(x => x.Value!.Errors.Select(e => e.ErrorMessage))
+                        .ToList();
+                    return BadRequest(new { message = string.Join(" ", errors) });
                 }
 
                 var existingUser = await _context.Users.Find(u => u.Id == id).FirstOrDefaultAsync();
                 if (existingUser == null) {
-                    return NotFound();
+                    return NotFound(new { message = "User not found." });
                 }
 
                 // Email değişiyorsa kontrol et
-                if (user.Email != existingUser.Email) {
-                    var emailExists = await _context.Users.Find(u => u.Email == user.Email && u.Id != id).FirstOrDefaultAsync();
-                    if (emailExists != null) {
-                        return BadRequest("Email already exists");
+                if (!string.IsNullOrEmpty(request.Email) && request.Email != existingUser.Email) {
+                    var emailExists = await _context.Users.Find(u => u.Email == request.Email && u.Id != id).AnyAsync();
+                    if (emailExists) {
+                        return BadRequest(new { message = "Email already exists." });
                     }
                 }
 
                 // Username değişiyorsa kontrol et
-                if (user.Username != existingUser.Username) {
-                    var usernameExists = await _context.Users.Find(u => u.Username == user.Username && u.Id != id).FirstOrDefaultAsync();
-                    if (usernameExists != null) {
-                        return BadRequest("Username already exists");
+                if (!string.IsNullOrEmpty(request.Username) && request.Username != existingUser.Username) {
+                    var usernameExists = await _context.Users.Find(u => u.Username == request.Username && u.Id != id).AnyAsync();
+                    if (usernameExists) {
+                        return BadRequest(new { message = "Username already exists." });
                     }
                 }
 
-                user.Id = id;
-                user.CreatedAt = existingUser.CreatedAt; // Preserve original creation date
-                user.UpdatedAt = DateTime.UtcNow;
-                if (string.IsNullOrEmpty(user.Password)) {
-                    user.Password = existingUser.Password;
-                } else {
-                    user.Password = PasswordHelper.Hash(user.Password);
-                }
+                // Update only provided fields (password is not updated through this endpoint)
+                existingUser.Username = !string.IsNullOrEmpty(request.Username) ? request.Username : existingUser.Username;
+                existingUser.Email = !string.IsNullOrEmpty(request.Email) ? request.Email : existingUser.Email;
+                existingUser.FullName = !string.IsNullOrEmpty(request.FullName) ? request.FullName : existingUser.FullName;
+                existingUser.PhoneNumber = request.PhoneNumber ?? existingUser.PhoneNumber;
+                existingUser.Bio = request.Bio ?? existingUser.Bio;
+                existingUser.ProfilePicture = !string.IsNullOrEmpty(request.ProfilePicture) ? request.ProfilePicture : existingUser.ProfilePicture;
+                existingUser.UpdatedAt = DateTime.UtcNow;
 
-                await _context.Users.ReplaceOneAsync(u => u.Id == id, user);
+                await _context.Users.ReplaceOneAsync(u => u.Id == id, existingUser);
                 
-                // Şifreyi response'dan çıkar
-                var userWithoutPassword = new {
-                    user.Id,
-                    user.Username,
-                    user.Email,
-                    user.FullName,
-                    user.PhoneNumber,
-                    user.Bio,
-                    user.ProfilePicture,
-                    user.IsActive,
-                    user.CreatedAt,
-                    user.UpdatedAt
+                // Return updated user without password
+                var userResponse = new UserResponse {
+                    Id = existingUser.Id,
+                    Username = existingUser.Username,
+                    Email = existingUser.Email,
+                    FullName = existingUser.FullName,
+                    PhoneNumber = existingUser.PhoneNumber,
+                    Bio = existingUser.Bio,
+                    ProfilePicture = existingUser.ProfilePicture,
+                    IsActive = existingUser.IsActive,
+                    CreatedAt = existingUser.CreatedAt,
+                    UpdatedAt = existingUser.UpdatedAt
                 };
                 
-                return Ok(userWithoutPassword);
+                return Ok(userResponse);
             }
             catch (Exception ex) {
                 _logger.LogError(ex, "Error updating user with id {Id}", id);
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, new { message = "Internal server error" });
             }
         }
 

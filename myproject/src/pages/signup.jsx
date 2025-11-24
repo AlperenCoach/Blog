@@ -68,12 +68,10 @@ export default function Signup() {
           navigate('/');
         }, 1000);
       } else {
-        console.error('Signup failed:', result.error);
         setMessage(result.error || 'Something went wrong while signing up.');
         setMessageColor('red');
       }
     } catch (error) {
-      console.error('Signup exception:', error);
       setMessage(error.message || 'Something went wrong while signing up. Please try again.');
       setMessageColor('red');
     } finally {
@@ -134,15 +132,21 @@ export default function Signup() {
           />
         </label>
         <label className="writeField" htmlFor="profilePicture">
-          Profile picture URL
+          Add a profile picture
           <input 
-            type="url" 
+            type="file" 
             id="profilePicture" 
             name="profilePicture" 
-            placeholder="https://images.unsplash.com/..." 
-            value={formData.profilePicture}
+            placeholder="Profile picture" 
+            accept="image/*"
             onChange={handleChange}
+            required 
           />
+          <p className="profilePicturePreview">
+            {formData.profilePicture && (
+              <img src={formData.profilePicture} alt="Profile picture" />
+            )}
+          </p>
         </label>
         <label className="writeField" htmlFor="password">
           Password

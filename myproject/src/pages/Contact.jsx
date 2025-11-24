@@ -140,11 +140,11 @@ export default function Contact() {
       </form>
 
       <div className="pageActions" style={{ marginTop: '2rem' }}>
-        <a href="mailto:merhaba@alpi.dev">Send an email</a>
+        <a href="mailto:info@alpidev.com">Send an email</a>
         <a href="https://cal.com/" target="_blank" rel="noreferrer">
           Book a call
         </a>
-        <a href="https://github.com/" target="_blank" rel="noreferrer">
+        <a href="https://github.com/AlperenCoach" target="_blank" rel="noreferrer">
           My GitHub profile
         </a>
       </div>

@@ -1,18 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
-using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using API.Data;
+using API.Services;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,14 +19,76 @@ builder.Services.AddControllers()
 
 // MongoDB Configuration
 builder.Services.AddSingleton<MongoDbContext>();
+
+// JWT Service
+builder.Services.AddSingleton<JwtService>();
+
+// JWT Authentication Configuration
+var jwtSecretKey = builder.Configuration["Jwt:SecretKey"] ?? "YourSuperSecretKeyThatShouldBeAtLeast32CharactersLongForHS256!";
+var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "AlpiDevAPI";
+var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "AlpiDevClient";
+
+builder.Services.AddAuthentication(options => {
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options => {
+    options.TokenValidationParameters = new TokenValidationParameters {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey)),
+        ValidateIssuer = true,
+        ValidIssuer = jwtIssuer,
+        ValidateAudience = true,
+        ValidAudience = jwtAudience,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
+builder.Services.AddAuthorization();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => {
-    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo {
+    options.SwaggerDoc("v1", new OpenApiInfo {
         Title = "Blog API",
         Version = "v1",
         Description = "Blog API Documentation - Blog, User, Auth, and Contact endpoints",
-        Contact = new Microsoft.OpenApi.Models.OpenApiContact {
+        Contact = new OpenApiContact {
             Name = "API Support"
+        }
+    });
+
+    // Add JWT Authentication to Swagger
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement {
+        {
+            new OpenApiSecurityScheme {
+                Reference = new OpenApiReference {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+
+    // Allow file upload parameters to be described correctly
+    options.MapType<IFormFile>(() => new OpenApiSchema {
+        Type = "string",
+        Format = "binary"
+    });
+    options.MapType<IEnumerable<IFormFile>>(() => new OpenApiSchema {
+        Type = "array",
+        Items = new OpenApiSchema {
+            Type = "string",
+            Format = "binary"
         }
     });
 });
@@ -43,7 +98,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("http://localhost:5173/", "http://localhost:3000/")
+        policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -77,15 +132,10 @@ if (app.Environment.IsProduction() ||
 
 app.UseCors("AllowReactApp");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
-
-
-
-
-
-
 

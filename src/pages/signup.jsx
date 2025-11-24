@@ -134,15 +134,21 @@ export default function Signup() {
           />
         </label>
         <label className="writeField" htmlFor="profilePicture">
-          Profile picture URL
+          Add a profile picture
           <input 
-            type="url" 
+            type="file" 
             id="profilePicture" 
             name="profilePicture" 
-            placeholder="https://images.unsplash.com/..." 
-            value={formData.profilePicture}
+            placeholder="Profile picture" 
+            accept="image/*"
             onChange={handleChange}
+            required 
           />
+          <p className="profilePicturePreview">
+            {formData.profilePicture && (
+              <img src={formData.profilePicture} alt="Profile picture" />
+            )}
+          </p>
         </label>
         <label className="writeField" htmlFor="password">
           Password

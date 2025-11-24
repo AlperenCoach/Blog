@@ -3,7 +3,7 @@ import headerImage from '../assets/headerImage.jpg';
 import './header.css';
 
 const sliderTexts = [
-  'Alpi\'s Coding Blog',
+  'We Can Create Websites For Your Personal Or Business Needs',
   'React & .NET Development',
   'Full Stack Solutions',
   'Modern Web Technologies',
@@ -39,7 +39,7 @@ export default function Header() {
         <span className="headerTitleSm headerSliderText">
           {sliderTexts[currentTextIndex]}
         </span>
-        <button className="headerButton">Read More</button>
+        <button className="headerButton">Get An Offer</button>
       </div>
       <div className="headerImgWrapper">
         <img

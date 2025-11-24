@@ -5,6 +5,7 @@ import { getBlogs } from '../services/api';
 import { Link } from 'react-router-dom';
 import './topbar.css';
 import unknownperson from '../assets/unknownperson.png';
+import logo from '../assets/logo.png';
 
 const navLinks = [
   { label: 'Home', to: '/' },
@@ -159,20 +160,25 @@ export default function Topbar() {
   return (
     <header className="top">
       <div className="topInner">
-        <button 
-          className="hamburgerButton" 
-          onClick={toggleMenu}
-          aria-label="Toggle menu"
-          aria-expanded={isMenuOpen}
-        >
-          <span className={`hamburgerLine ${isMenuOpen ? 'open' : ''}`}></span>
-          <span className={`hamburgerLine ${isMenuOpen ? 'open' : ''}`}></span>
-          <span className={`hamburgerLine ${isMenuOpen ? 'open' : ''}`}></span>
-        </button>
+        <div className="topLogoWrapper">
+          <button 
+            className="hamburgerButton" 
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
+          >
+            <span className={`hamburgerLine ${isMenuOpen ? 'open' : ''}`}></span>
+            <span className={`hamburgerLine ${isMenuOpen ? 'open' : ''}`}></span>
+            <span className={`hamburgerLine ${isMenuOpen ? 'open' : ''}`}></span>
+          </button>
+          <Link to="/" className="topLogo" onClick={closeMenu}>
+            <img src={logo} alt="Alpi.Dev Logo" className="topLogoImage" />
+          </Link>
+        </div>
         <div className="topLeft">
           <a
             className="topIcon"
-            href="https://github.com/"
+            href="https://github.com/AlperenCoach"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
@@ -181,13 +187,14 @@ export default function Topbar() {
           </a>
           <a
             className="topIcon"
-            href="https://www.instagram.com/"
+            href="https://www.linkedin.com/in/alperencs/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Instagram"
+            aria-label="LinkedIn"
           >
-            <i className="fa-brands fa-instagram" aria-hidden="true" />
+            <i className="fa-brands fa-linkedin" aria-hidden="true" />
           </a>
+          
           <a
             className="topIcon"
             href="https://twitter.com/"
@@ -213,12 +220,8 @@ export default function Topbar() {
             ))}
             <li>
               {isAuthenticated() ? (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <span style={{ 
-                    fontFamily: "'Poppins', sans-serif",
-                    fontSize: '0.9rem',
-                    color: '#64748b'
-                  }}>
+                <div className="topNavAuthContainer">
+                  <span className="topNavUsername">
                     {user?.username || user?.email}
                   </span>
                   <button 
@@ -263,8 +266,12 @@ export default function Topbar() {
             >
               <img
                 className="topAvatar"
-                src={unknownperson}
-                alt="Profil"
+                src={user?.profilePicture || unknownperson}
+                alt={user?.fullName || user?.username || "Profile"}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = unknownperson;
+                }}
               />
             </button>
             <div 
@@ -330,6 +337,16 @@ export default function Topbar() {
                     }}
                   >
                     Create Account
+                  </button>
+                  <button
+                    type="button"
+                    className="avatarDropdownItem"
+                    onClick={() => {
+                      navigate('/profile');
+                      setIsAvatarOpen(false);
+                    }}
+                  >
+                    My Profile
                   </button>
                 </>
               )}

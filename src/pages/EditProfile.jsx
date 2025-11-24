@@ -18,8 +18,21 @@ export default function EditProfile() {
   const [status, setStatus] = useState({ type: '', message: '' });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, files } = e.target;
+    
+    if (files && files[0]) {
+      // File input için
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prev) => ({ ...prev, [name]: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // Normal input için
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+    
     if (status.message) {
       setStatus({ type: '', message: '' });
     }
@@ -100,27 +113,36 @@ export default function EditProfile() {
             />
           </label>
           <label className="profileFormField">
-            Profile picture URL
-            <input
-              type="url"
-              name="profilePicture"
-              value={formData.profilePicture}
+            Short bio
+            <textarea
+              name="bio"
+              rows="4"
+              value={formData.bio}
               onChange={handleChange}
-              placeholder="https://images.unsplash.com/..."
+              placeholder="Share a short introduction..."
             />
           </label>
+        <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
+          <button type="button" className="profilePictureButton" onClick={() => document.getElementById('profilePicture').click()}>
+            Add a profile picture
+          </button>
+          <input
+            type="file"
+            id="profilePicture"
+            name="profilePicture"
+            accept="image/*"
+            onChange={handleChange}
+            style={{ display: 'none' }}
+          />
+          {formData.profilePicture && (
+            <p className="profilePicturePreview" style={{ margin: 0 }}>
+              <img src={formData.profilePicture} alt="Profile picture" style={{ maxWidth: '150px', maxHeight: '150px', borderRadius: '8px', objectFit: 'cover' }} />
+            </p>
+          )}
+        </div>
         </div>
 
-        <label className="profileFormField">
-          Short bio
-          <textarea
-            name="bio"
-            rows="4"
-            value={formData.bio}
-            onChange={handleChange}
-            placeholder="Share a short introduction..."
-          />
-        </label>
+
 
         <div className="profileFormActions">
           <button type="button" className="ghost" onClick={() => navigate('/profile')}>

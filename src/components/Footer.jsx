@@ -1,10 +1,10 @@
 import '../footer/footer.css';
 
 const footerLinks = [
-  { label: 'GitHub', href: 'https://github.com/', icon: 'fa-brands fa-github' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/', icon: 'fa-brands fa-linkedin' },
+  { label: 'GitHub', href: 'https://github.com/AlperenCoach', icon: 'fa-brands fa-github' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/alperencs/', icon: 'fa-brands fa-linkedin' },
   { label: 'Twitter', href: 'https://twitter.com/', icon: 'fa-brands fa-x-twitter' },
-  { label: 'Contact', href: 'mailto:merhaba@alpi.dev', icon: 'fa-solid fa-envelope' },
+  { label: 'Contact', href: 'mailto:info@alpidev.com', icon: 'fa-solid fa-envelope' },
 ];
 
 function Footer() {

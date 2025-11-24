@@ -117,12 +117,12 @@
   justify-content: space-between;
   align-items: center;
   font-size: clamp(0.7rem, 1.2vw, 0.8rem);
-  color: rgba(15, 23, 42, 0.6);
+  color: rgba(15, 23, 42, 0.7);
 }
 
 .postCardDate {
   font-size: clamp(0.7rem, 1.2vw, 0.8rem);
-  color: rgba(15, 23, 42, 0.6);
+  color: rgba(15, 23, 42, 0.7);
   font-weight: 500;
 }
 
@@ -137,7 +137,7 @@
   align-items: center;
   gap: clamp(0.25rem, 0.5vw, 0.35rem);
   font-size: clamp(0.7rem, 1.2vw, 0.8rem);
-  color: rgba(15, 23, 42, 0.6);
+  color: rgba(15, 23, 42, 0.7);
 }
 
 .postCardStat svg {

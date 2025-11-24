@@ -17,7 +17,7 @@
 .page p {
   margin: 0;
   line-height: 1.7;
-  color: rgba(15, 23, 42, 0.75);
+  color: rgba(15, 23, 42, 0.8);
 }
 
 .pageActions {
@@ -106,6 +106,270 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.profilePage {
+  gap: clamp(1.8rem, 3vw, 2.6rem);
+}
+
+.profileCard {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 26px;
+  padding: clamp(1.6rem, 2vw + 1rem, 2.4rem);
+  box-shadow: 0 28px 60px rgba(15, 23, 42, 0.14);
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.profileHeader {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.profileAvatar {
+  width: clamp(80px, 6vw, 110px);
+  height: clamp(80px, 6vw, 110px);
+  border-radius: 24px;
+  border: 3px solid rgba(37, 99, 235, 0.2);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.profileAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profileHeaderContent h1 {
+  margin-bottom: 0.3rem;
+}
+
+.profileTitleRow {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.profileStatus {
+  font-size: 0.85rem;
+  padding: 0.2rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+}
+
+.profileRole {
+  font-weight: 600;
+  color: #111827;
+}
+
+.profileLocation {
+  color: rgba(15, 23, 42, 0.6);
+  font-size: 0.95rem;
+}
+
+.profileLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.8rem;
+}
+
+.profileLinks a,
+.profileLinks button {
+  border-radius: 999px;
+  padding: 0.4rem 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(15, 23, 42, 0.04);
+  font-weight: 600;
+  color: #1d4ed8;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profileLinks button {
+  background: transparent;
+  color: #0f172a;
+}
+
+.profileLinks a:hover,
+.profileLinks button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 24px rgba(15, 23, 42, 0.12);
+}
+
+.profileBio {
+  font-size: 1.05rem;
+  color: rgba(15, 23, 42, 0.85);
+}
+
+.profileBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.profileBadges span {
+  background: rgba(37, 99, 235, 0.08);
+  color: #1d4ed8;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  border: 1px dashed rgba(37, 99, 235, 0.4);
+}
+
+.profileHighlights {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.profileHighlight {
+  border-radius: 18px;
+  padding: 1.1rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(248, 250, 252, 0.9);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.profileHighlight span {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.profileHighlight p {
+  font-size: 0.95rem;
+  color: rgba(15, 23, 42, 0.6);
+}
+
+.profileHighlight.experiments {
+  background: rgba(59, 130, 246, 0.12);
+}
+
+.profileHighlight.mentorship {
+  background: rgba(34, 197, 94, 0.15);
+}
+
+.profileHighlight.writing {
+  background: rgba(249, 115, 22, 0.15);
+}
+
+.profileSkills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.profileSkills span {
+  background: rgba(15, 23, 42, 0.08);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.9rem;
+  color: #0f172a;
+}
+
+.profileEditForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: clamp(1.5rem, 2vw + 0.5rem, 2rem);
+  border-radius: 22px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.1);
+  animation: fade-slide-up 0.45s ease;
+}
+
+.profileEditForm label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: rgba(15, 23, 42, 0.7);
+}
+
+.profileEditForm input,
+.profileEditForm textarea {
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  padding: 0.65rem 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profileEditForm input:focus,
+.profileEditForm textarea:focus {
+  outline: none;
+  border-color: rgba(37, 99, 235, 0.35);
+  box-shadow: 0 12px 25px rgba(37, 99, 235, 0.2);
+}
+
+.profileEditGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.profileEditActions {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.profileEditActions button {
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profileEditActions button[type='submit'] {
+  background: rgba(37, 99, 235, 0.95);
+  color: white;
+  box-shadow: 0 18px 32px rgba(37, 99, 235, 0.3);
+}
+
+.profileEditActions button.ghost {
+  border: 1px solid rgba(15, 23, 42, 0.2);
+  background: transparent;
+  color: #0f172a;
+}
+
+@media (max-width: 640px) {
+  .profileHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profileEditActions {
+    flex-direction: column;
+  }
+
+  .profileEditActions button {
+    width: 100%;
+  }
 }
 
 .writeActions button[type='submit'] {
@@ -466,6 +730,22 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* File input'u gizle - sadece özel buton görünecek */
+.profileFormField input[type="file"],
+.profileForm input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .profileFormField input:focus,
 .profileFormField textarea:focus {
   outline: none;
@@ -537,4 +817,31 @@
     width: 100%;
     text-align: center;
   }
+}
+
+
+.profilePictureButton {
+  height: 40px;
+  width: auto;
+  min-width: 200px;
+  border-radius: 5px;
+  border: none;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif; 
+  color: #fff;  
+  background-color: #0051ff;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  margin-left: auto;
+  margin-top: 1.5rem;
+  align-self: flex-end;
+  grid-column: 1 / -1;
+  justify-self: end;
+}
+
+.profilePictureButton:hover {
+  background-color: #ff0000;
+  color: #000;
 }

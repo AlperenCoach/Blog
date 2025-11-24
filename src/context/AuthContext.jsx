@@ -76,9 +76,30 @@ export const AuthProvider = ({ children }) => {
       return { success: true };
     } catch (error) {
       console.error('Signup error:', error);
+      console.error('Error response:', error.response);
+      console.error('Error response data:', error.response?.data);
+      
+      // Extract error message from different possible formats
+      let errorMessage = 'Something went wrong while signing up.';
+      if (error.response?.data) {
+        if (typeof error.response.data === 'string') {
+          errorMessage = error.response.data;
+        } else if (error.response.data.message) {
+          errorMessage = error.response.data.message;
+        } else if (error.response.data.error) {
+          errorMessage = error.response.data.error;
+        } else if (typeof error.response.data === 'object') {
+          // Handle validation errors
+          const errors = Object.values(error.response.data).flat();
+          errorMessage = Array.isArray(errors) ? errors.join(', ') : JSON.stringify(error.response.data);
+        }
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       return {
         success: false,
-        error: error.response?.data || 'Something went wrong while signing up.',
+        error: errorMessage,
       };
     }
   };

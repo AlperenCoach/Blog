@@ -4,6 +4,7 @@ using API.Models;
 using API.Data;
 using API.Utils;
 using MongoDB.Driver;
+using System.Linq;
 
 namespace API.Controller {
     [ApiController]
@@ -44,18 +45,33 @@ namespace API.Controller {
         [HttpPost("signup")]
         public async Task<IActionResult> Signup([FromBody] SignupRequest request) {
             if (!ModelState.IsValid) {
-                return BadRequest(ModelState);
+                var errors = ModelState
+                    .Where(x => x.Value?.Errors.Count > 0)
+                    .SelectMany(x => x.Value.Errors.Select(e => e.ErrorMessage))
+                    .ToList();
+                return BadRequest(new { message = string.Join(" ", errors) });
             }
 
             try {
+                // Validate required fields
+                if (string.IsNullOrWhiteSpace(request.Username)) {
+                    return BadRequest(new { message = "Username is required." });
+                }
+                if (string.IsNullOrWhiteSpace(request.Email)) {
+                    return BadRequest(new { message = "Email is required." });
+                }
+                if (string.IsNullOrWhiteSpace(request.Password)) {
+                    return BadRequest(new { message = "Password is required." });
+                }
+
                 var emailExists = await _context.Users.Find(u => u.Email == request.Email).AnyAsync();
                 if (emailExists) {
-                    return BadRequest("Email already exists.");
+                    return BadRequest(new { message = "Email already exists." });
                 }
 
                 var usernameExists = await _context.Users.Find(u => u.Username == request.Username).AnyAsync();
                 if (usernameExists) {
-                    return BadRequest("Username already exists.");
+                    return BadRequest(new { message = "Username already exists." });
                 }
 
                 var user = new User {
@@ -63,6 +79,7 @@ namespace API.Controller {
                     Email = request.Email,
                     Password = PasswordHelper.Hash(request.Password),
                     FullName = request.FullName,
+                    PhoneNumber = request.PhoneNumber,
                     ProfilePicture = request.ProfilePicture,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
@@ -75,7 +92,7 @@ namespace API.Controller {
             }
             catch (Exception ex) {
                 _logger.LogError(ex, "Error signing up user {Email}", request.Email);
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, new { message = $"Internal server error: {ex.Message}" });
             }
         }
 

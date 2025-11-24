@@ -63,8 +63,7 @@ if (app.Environment.IsDevelopment())
         options
             .WithTitle("Blog API Documentation")
             .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
-            .WithTheme(ScalarTheme.BluePlanet)
-            .WithOpenApiSpecUrl("/swagger/v1/swagger.json");
+            .WithTheme(ScalarTheme.BluePlanet);
     });
 }
 

@@ -32,7 +32,7 @@ export default function Contact() {
     try {
       await sendContactMessage(formData);
       
-      setMessage('Your message has been sent! I'll get back to you shortly.');
+      setMessage("Your message has been sent! I'll get back to you shortly.");
       setMessageColor('green');
       
       // Reset form

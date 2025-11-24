@@ -58,17 +58,23 @@ export default function Signup() {
         email: formData.email,
         phoneNumber: formData.phoneNumber,
         password: formData.password,
-        profilePicture: formData.profilePicture,
+        profilePicture: formData.profilePicture || '',
       });
 
       if (result.success) {
-        navigate('/');
+        setMessage('Account created successfully! Redirecting...');
+        setMessageColor('green');
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
       } else {
+        console.error('Signup failed:', result.error);
         setMessage(result.error || 'Something went wrong while signing up.');
         setMessageColor('red');
       }
     } catch (error) {
-      setMessage('Something went wrong while signing up.');
+      console.error('Signup exception:', error);
+      setMessage(error.message || 'Something went wrong while signing up. Please try again.');
       setMessageColor('red');
     } finally {
       setLoading(false);

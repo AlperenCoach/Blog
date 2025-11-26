@@ -1,0 +1,50 @@
+/* Neue Haas Grotesk Display Pro Font Family */
+
+/* Yöntem 1: Local Font Dosyaları (Önerilen)
+   Font dosyalarını src/assets/fonts/ klasörüne ekleyin */
+
+@font-face {
+  font-family: 'Neue Haas Grotesk Display Pro';
+  src: url('../assets/fonts/NeueHaasGroteskDisplayPro-Regular.woff2') format('woff2'),
+       url('../assets/fonts/NeueHaasGroteskDisplayPro-Regular.woff') format('woff'),
+       url('../assets/fonts/NeueHaasGroteskDisplayPro-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Haas Grotesk Display Pro';
+  src: url('../assets/fonts/NeueHaasGroteskDisplayPro-Bold.woff2') format('woff2'),
+       url('../assets/fonts/NeueHaasGroteskDisplayPro-Bold.woff') format('woff'),
+       url('../assets/fonts/NeueHaasGroteskDisplayPro-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Yöntem 2: Adobe Fonts veya Typekit CDN kullanmak isterseniz, aşağıdaki satırı index.html'e ekleyin:
+   <link rel="stylesheet" href="https://use.typekit.net/YOUR_KIT_ID.css">
+*/
+
+/* CSS Değişkeni: Tüm projede kullanım için */
+:root {
+  --font-neue-haas: 'Neue Haas Grotesk Display Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Global font tanımı */
+body {
+  font-family: var(--font-neue-haas);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header için özel font kullanımı */
+.headerTitles,
+.headerTitleSm,
+.headerSliderText {
+  font-family: var(--font-neue-haas);
+}
+
+/* Not: Eğer font dosyaları bulunamazsa, sistem fallback fontları (Helvetica Neue, Helvetica, Arial) kullanılacaktır */
+

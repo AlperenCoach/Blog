@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  
+  <!-- Ana Sayfa - En yüksek öncelik -->
+  <url>
+    <loc>https://alpidev.com/</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Blog Listesi -->
+  <url>
+    <loc>https://alpidev.com/blog</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Özel Blog Yazısı: N8N Automation Guide -->
+  <url>
+    <loc>https://alpidev.com/blog/n8n-automation-guide</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Hakkında Sayfası -->
+  <url>
+    <loc>https://alpidev.com/about</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- İletişim Sayfası -->
+  <url>
+    <loc>https://alpidev.com/contact</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Giriş Sayfası -->
+  <url>
+    <loc>https://alpidev.com/login</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- Kayıt Sayfası -->
+  <url>
+    <loc>https://alpidev.com/signup</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- 
+    NOTLAR:
+    
+    1. DOMAIN DEĞİŞİKLİĞİ: Eğer farklı bir domain kullanıyorsanız, yukarıdaki tüm URL'lerdeki 
+       "https://alpi.dev" kısmını kendi domain'inizle değiştirin.
+    
+    2. DİNAMİK BLOG SAYFALARI: Dinamik blog detay sayfaları (/blog/:id) API'den çekilen 
+       blog listesine göre otomatik olarak eklenebilir. Bu sayfalar için:
+       - Build time'da bir sitemap generator script'i çalıştırılabilir
+       - API endpoint'inden blog listesi çekilerek her bir blog post için URL eklenebilir
+       - Her blog post için priority 0.6-0.7 arası uygun olabilir
+    
+    3. PROTECTED ROUTE'LAR: Aşağıdaki route'lar giriş gerektirdiği için sitemap'e eklenmemelidir:
+       - /write (Blog yazma sayfası)
+       - /profile (Kullanıcı profili)
+       - /profile/edit (Profil düzenleme)
+    
+    4. LASTMOD TARİHİ: lastmod değerlerini gerçek güncelleme tarihlerinize göre güncelleyin.
+       Format: YYYY-MM-DD
+    
+    5. SİTEMAP YÜKLEMESİ: Sitemap'i Google Search Console ve diğer arama motorlarına 
+       göndermeyi unutmayın.
+  -->
+  
+</urlset>
+

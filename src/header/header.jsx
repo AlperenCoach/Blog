@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import headerImage from '../assets/headerImage.jpg';
 import './header.css';
+import getAnOffer from '../pages/getAnOffer';
 
 const sliderTexts = [
-  'We Can Create Websites For Your Personal Or Business Needs',
+  'We Can Create Websites For \nYour Personal Or Business Needs',
   'React & .NET Development',
   'Full Stack Solutions',
   'Modern Web Technologies',
@@ -39,7 +40,7 @@ export default function Header() {
         <span className="headerTitleSm headerSliderText">
           {sliderTexts[currentTextIndex]}
         </span>
-        <button className="headerButton">Get An Offer</button>
+        <button href={getAnOffer} className="headerButton">Get An Offer</button>
       </div>
       <div className="headerImgWrapper">
         <img

@@ -68,12 +68,10 @@ export default function Signup() {
           navigate('/');
         }, 1000);
       } else {
-        console.error('Signup failed:', result.error);
         setMessage(result.error || 'Something went wrong while signing up.');
         setMessageColor('red');
       }
     } catch (error) {
-      console.error('Signup exception:', error);
       setMessage(error.message || 'Something went wrong while signing up. Please try again.');
       setMessageColor('red');
     } finally {

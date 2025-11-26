@@ -31,7 +31,7 @@
 
 .footerBrand span {
   font-size: 0.95rem;
-  color: rgba(226, 232, 240, 0.7);
+  color: rgba(226, 232, 240, 0.85);
 }
 
 .footerLinks {
@@ -57,7 +57,7 @@
 
 .footerNote {
   font-size: 0.85rem;
-  color: rgba(226, 232, 240, 0.6);
+  color: rgba(226, 232, 240, 0.8);
   letter-spacing: 0.05em;
 }
 

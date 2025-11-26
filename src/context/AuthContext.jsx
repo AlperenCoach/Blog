@@ -40,7 +40,6 @@ export const AuthProvider = ({ children }) => {
             return;
           } catch (apiError) {
             // If API call fails, use cached data
-            console.warn('Could not fetch user from API, using cached data:', apiError);
             setUser(parsedUser);
           }
         } else {
@@ -75,10 +74,6 @@ export const AuthProvider = ({ children }) => {
       handleAuthSuccess(response);
       return { success: true };
     } catch (error) {
-      console.error('Signup error:', error);
-      console.error('Error response:', error.response);
-      console.error('Error response data:', error.response?.data);
-      
       // Extract error message from different possible formats
       let errorMessage = 'Something went wrong while signing up.';
       if (error.response?.data) {

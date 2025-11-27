@@ -1,6 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using API.Models;
 
@@ -11,10 +13,33 @@ namespace API.Services {
         private readonly string _audience;
         private readonly int _expirationMinutes;
 
-        public JwtService(IConfiguration configuration) {
-            _secretKey = configuration["Jwt:SecretKey"] ?? "YourSuperSecretKeyThatShouldBeAtLeast32CharactersLongForHS256!";
-            _issuer = configuration["Jwt:Issuer"] ?? "AlpiDevAPI";
-            _audience = configuration["Jwt:Audience"] ?? "AlpiDevClient";
+        public JwtService(IConfiguration configuration, IWebHostEnvironment environment) {
+            // Priority: Environment Variable > Configuration > Default (Development only)
+            _secretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") 
+                ?? configuration["Jwt:SecretKey"] 
+                ?? (environment.IsDevelopment() ? "DevelopmentSecretKeyThatShouldBeAtLeast32CharactersLongForHS256!" : null)!;
+
+            // Validate JWT Secret Key
+            if (string.IsNullOrWhiteSpace(_secretKey)) {
+                throw new InvalidOperationException(
+                    "JWT Secret Key is required. Set JWT_SECRET_KEY environment variable or configure it in appsettings.json"
+                );
+            }
+
+            if (_secretKey.Length < 32) {
+                throw new InvalidOperationException(
+                    $"JWT Secret Key must be at least 32 characters long for security. Current length: {_secretKey.Length}"
+                );
+            }
+
+            _issuer = Environment.GetEnvironmentVariable("JWT_ISSUER") 
+                ?? configuration["Jwt:Issuer"] 
+                ?? "AlpiDevAPI";
+
+            _audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") 
+                ?? configuration["Jwt:Audience"] 
+                ?? "AlpiDevClient";
+
             _expirationMinutes = configuration.GetValue<int>("Jwt:ExpirationMinutes", 1440); // 24 hours default
         }
 
@@ -27,7 +52,8 @@ namespace API.Services {
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim("fullName", user.FullName),
-                new Claim("userId", user.Id ?? "")
+                new Claim("userId", user.Id ?? ""),
+                new Claim("role", user.Role ?? "User")
             };
 
             var tokenDescriptor = new SecurityTokenDescriptor {

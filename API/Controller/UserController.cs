@@ -1,10 +1,12 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using API.Models;
 using API.Data;
 using API.Utils;
 using MongoDB.Driver;
 using System.Linq;
+using System.Security.Claims;
 
 namespace API.Controller {
     [ApiController]
@@ -33,6 +35,7 @@ namespace API.Controller {
                     Bio = u.Bio,
                     ProfilePicture = u.ProfilePicture,
                     IsActive = u.IsActive,
+                    Role = u.Role,
                     CreatedAt = u.CreatedAt,
                     UpdatedAt = u.UpdatedAt
                 });
@@ -62,6 +65,7 @@ namespace API.Controller {
                     Bio = user.Bio,
                     ProfilePicture = user.ProfilePicture,
                     IsActive = user.IsActive,
+                    Role = user.Role,
                     CreatedAt = user.CreatedAt,
                     UpdatedAt = user.UpdatedAt
                 };
@@ -122,9 +126,10 @@ namespace API.Controller {
                     return BadRequest("Username already exists");
                 }
 
-                user.CreatedAt = DateTime.Now;
-                user.UpdatedAt = DateTime.Now;
+                user.CreatedAt = DateTime.UtcNow;
+                user.UpdatedAt = DateTime.UtcNow;
                 user.IsActive = true;
+                user.Role = user.Role ?? "User"; // Default role
                 user.Password = PasswordHelper.Hash(user.Password);
 
                 await _context.Users.InsertOneAsync(user);
@@ -153,6 +158,7 @@ namespace API.Controller {
 
         // PUT: api/user/{id} - Profile Update (EditProfile)
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> Put(string id, [FromBody] EditProfileRequest request) {
             try {
                 if (request == null) {
@@ -170,6 +176,19 @@ namespace API.Controller {
                 var existingUser = await _context.Users.Find(u => u.Id == id).FirstOrDefaultAsync();
                 if (existingUser == null) {
                     return NotFound(new { message = "User not found." });
+                }
+
+                // Authorization: Users can only update their own profile, unless they are Admin
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var userRole = User.FindFirst("role")?.Value;
+                
+                if (string.IsNullOrEmpty(userIdClaim)) {
+                    return Unauthorized(new { message = "User not authenticated." });
+                }
+
+                // Only allow users to update their own profile, or admins to update any profile
+                if (userIdClaim != id && userRole != "Admin") {
+                    return Forbid("You can only update your own profile.");
                 }
 
                 // Email değişiyorsa kontrol et
@@ -209,6 +228,7 @@ namespace API.Controller {
                     Bio = existingUser.Bio,
                     ProfilePicture = existingUser.ProfilePicture,
                     IsActive = existingUser.IsActive,
+                    Role = existingUser.Role,
                     CreatedAt = existingUser.CreatedAt,
                     UpdatedAt = existingUser.UpdatedAt
                 };
@@ -247,7 +267,7 @@ namespace API.Controller {
                 }
 
                 user.IsActive = !user.IsActive;
-                user.UpdatedAt = DateTime.Now;
+                user.UpdatedAt = DateTime.UtcNow;
 
                 await _context.Users.ReplaceOneAsync(u => u.Id == id, user);
                 return Ok(new { id = user.Id, isActive = user.IsActive });

@@ -19,16 +19,28 @@ namespace API.Controller {
             _logger = logger;
         }
 
-        // GET: api/blog
+        // GET: api/blog?pageNumber=1&pageSize=10
         [HttpGet]
-        public async Task<IActionResult> Get() {
+        public async Task<IActionResult> Get([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10) {
             try {
-                var blogs = await _context.Blogs.Find(_ => true).ToListAsync();
-                return Ok(blogs);
+                if (pageNumber < 1) pageNumber = 1;
+                if (pageSize < 1) pageSize = 10;
+                if (pageSize > 100) pageSize = 100; // Max page size
+
+                var totalCount = (int)await _context.Blogs.CountDocumentsAsync(_ => true);
+                var blogs = await _context.Blogs
+                    .Find(_ => true)
+                    .SortByDescending(b => b.CreatedAt)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Limit(pageSize)
+                    .ToListAsync();
+
+                var pagedResponse = new PagedResponse<Blog>(blogs, pageNumber, pageSize, totalCount);
+                return Ok(pagedResponse);
             }
             catch (Exception ex) {
                 _logger.LogError(ex, "Error getting blogs");
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, new { message = "Internal server error" });
             }
         }
 
@@ -130,9 +142,17 @@ namespace API.Controller {
                     return NotFound(new { message = "Blog not found." });
                 }
 
-                // Verify ownership (optional - if you want only the author to edit)
+                // Verify ownership: Only the author or admin can edit
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                // You can add author verification here if needed
+                var userRole = User.FindFirst("role")?.Value;
+
+                if (string.IsNullOrEmpty(userIdClaim)) {
+                    return Unauthorized(new { message = "User not authenticated." });
+                }
+
+                if (existingBlog.AuthorId != userIdClaim && userRole != "Admin") {
+                    return Forbid("You can only edit your own blogs.");
+                }
 
                 // Update blog properties
                 blog.Id = id;
@@ -164,9 +184,17 @@ namespace API.Controller {
                     return NotFound(new { message = "Blog not found." });
                 }
 
-                // Verify ownership (optional - if you want only the author to delete)
+                // Verify ownership: Only the author or admin can delete
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                // You can add author verification here if needed
+                var userRole = User.FindFirst("role")?.Value;
+
+                if (string.IsNullOrEmpty(userIdClaim)) {
+                    return Unauthorized(new { message = "User not authenticated." });
+                }
+
+                if (blog.AuthorId != userIdClaim && userRole != "Admin") {
+                    return Forbid("You can only delete your own blogs.");
+                }
 
                 var result = await _context.Blogs.DeleteOneAsync(b => b.Id == id);
                 if (result.DeletedCount == 0) {

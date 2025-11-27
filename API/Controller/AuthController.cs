@@ -35,7 +35,10 @@ namespace API.Controller {
             }
 
             try {
-                var user = await _context.Users.Find(u => u.Email == request.Email).FirstOrDefaultAsync();
+                // Sanitize email input
+                var sanitizedEmail = InputSanitizer.Sanitize(request.Email);
+                
+                var user = await _context.Users.Find(u => u.Email == sanitizedEmail).FirstOrDefaultAsync();
                 if (user == null) {
                     return Unauthorized(new { message = "Invalid email or password." });
                 }
@@ -71,37 +74,40 @@ namespace API.Controller {
             }
 
             try {
-                // Validate required fields
-                if (string.IsNullOrWhiteSpace(request.Username)) {
-                    return BadRequest(new { message = "Username is required." });
-                }
-                if (string.IsNullOrWhiteSpace(request.Email)) {
-                    return BadRequest(new { message = "Email is required." });
-                }
-                if (string.IsNullOrWhiteSpace(request.Password)) {
-                    return BadRequest(new { message = "Password is required." });
+                // Sanitize inputs to prevent XSS attacks
+                var sanitizedEmail = InputSanitizer.Sanitize(request.Email);
+                var sanitizedUsername = InputSanitizer.Sanitize(request.Username);
+                var sanitizedFullName = InputSanitizer.Sanitize(request.FullName);
+                var sanitizedPhoneNumber = InputSanitizer.Sanitize(request.PhoneNumber);
+                var sanitizedProfilePicture = InputSanitizer.Sanitize(request.ProfilePicture);
+
+                // Validate email format (already done by data annotations, but double-check)
+                var emailValidator = new System.ComponentModel.DataAnnotations.EmailAddressAttribute();
+                if (!emailValidator.IsValid(sanitizedEmail)) {
+                    return BadRequest(new { message = "Invalid email format." });
                 }
 
-                var emailExists = await _context.Users.Find(u => u.Email == request.Email).AnyAsync();
+                var emailExists = await _context.Users.Find(u => u.Email == sanitizedEmail).AnyAsync();
                 if (emailExists) {
                     return BadRequest(new { message = "Email already exists." });
                 }
 
-                var usernameExists = await _context.Users.Find(u => u.Username == request.Username).AnyAsync();
+                var usernameExists = await _context.Users.Find(u => u.Username == sanitizedUsername).AnyAsync();
                 if (usernameExists) {
                     return BadRequest(new { message = "Username already exists." });
                 }
 
                 var user = new User {
-                    Username = request.Username,
-                    Email = request.Email,
-                    Password = PasswordHelper.Hash(request.Password),
-                    FullName = request.FullName,
-                    PhoneNumber = request.PhoneNumber,
-                    ProfilePicture = request.ProfilePicture,
+                    Username = sanitizedUsername,
+                    Email = sanitizedEmail,
+                    Password = PasswordHelper.Hash(request.Password), // Don't sanitize password
+                    FullName = sanitizedFullName,
+                    PhoneNumber = sanitizedPhoneNumber,
+                    ProfilePicture = sanitizedProfilePicture,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
-                    IsActive = true
+                    IsActive = true,
+                    Role = "User" // Default role for new users
                 };
 
                 await _context.Users.InsertOneAsync(user);
@@ -127,6 +133,7 @@ namespace API.Controller {
                     Bio = user.Bio,
                     ProfilePicture = user.ProfilePicture,
                     IsActive = user.IsActive,
+                    Role = user.Role,
                     CreatedAt = user.CreatedAt,
                     UpdatedAt = user.UpdatedAt
                 }

@@ -1,0 +1,75 @@
+.post {
+  margin: 3rem auto 4rem;
+  max-width: min(1120px, 100%);
+  padding: 0 clamp(1rem, 3vw, 2rem);
+}
+
+.postCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding: clamp(1.6rem, 3vw, 2.4rem);
+  border-radius: clamp(16px, 3vw, 24px);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.05), rgba(15, 23, 42, 0.1));
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+  font-family: 'Poppins', sans-serif;
+  color: #0f172a;
+}
+
+.postCard img {
+  width: 100%;
+  max-height: clamp(220px, 40vw, 380px);
+  object-fit: cover;
+  border-radius: clamp(14px, 2.5vw, 20px);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.2);
+}
+
+.postMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(15, 23, 42, 0.65);
+}
+
+.postContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  line-height: 1.75;
+  color: rgba(15, 23, 42, 0.78);
+}
+
+.postContent h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 2.5vw + 0.8rem, 2.6rem);
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.postTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.postTag {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.12);
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  color: #1d4ed8;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 640px) {
+  .post {
+    margin: 2.5rem auto 3rem;
+    padding: 0 clamp(0.8rem, 4vw, 1.5rem);
+  }
+}

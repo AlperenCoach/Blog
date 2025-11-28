@@ -42,6 +42,9 @@ builder.Services.AddSingleton<MongoDbContext>();
 // JWT Service
 builder.Services.AddSingleton<JwtService>();
 
+// Email Service
+builder.Services.AddSingleton<API.Services.EmailService>();
+
 // Rate Limiting Configuration
 builder.Services.AddMemoryCache();
 builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));

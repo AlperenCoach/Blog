@@ -12,6 +12,9 @@ import Footer from './components/Footer.jsx';
 import Login from './pages/login';
 import Signup from './pages/signup';
 import N8nAutomation from './pages/N8nAutomation';
+import React19 from './pages/React19';
+import DotNet8 from './pages/DotNet8';
+import RapidUX from './pages/RapidUX';
 import ProtectedRoute from './components/ProtectedRoute';
 import MyProfile from './pages/myProfile';
 import EditProfile from './pages/EditProfile.jsx';
@@ -32,6 +35,9 @@ function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:id" element={<BlogDetail />} />
         <Route path="/blog/n8n-automation-guide" element={<N8nAutomation />} />
+        <Route path="/blog/fallback-react-19" element={<React19 />} />
+        <Route path="/blog/fallback-clean-architecture" element={<DotNet8 />} />
+        <Route path="/blog/fallback-ux-research-1" element={<RapidUX />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route 

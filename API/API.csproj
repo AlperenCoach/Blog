@@ -17,6 +17,7 @@
     <PackageReference Include="AspNetCoreRateLimit" Version="5.0.0" />
     <PackageReference Include="HtmlSanitizer" Version="8.1.843" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="MailKit" Version="4.8.0" />
   </ItemGroup>
 
 </Project>

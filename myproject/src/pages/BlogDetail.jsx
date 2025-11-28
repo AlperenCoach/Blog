@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getBlogById } from '../services/api';
-import { FaArrowLeft, FaCalendar, FaUser, FaComment, FaHeart, FaTag } from 'react-icons/fa';
+import { FaArrowLeft, FaCalendar, FaUser, FaTag } from 'react-icons/fa';
 import './BlogDetail.css';
 
 export default function BlogDetail() {
@@ -121,15 +121,6 @@ export default function BlogDetail() {
           </div>
 
           <div className="blogDetailFooter">
-            <div className="blogDetailStats">
-              <span className="blogDetailStat">
-                <FaComment /> 0 Comments
-              </span>
-              <span className="blogDetailStat">
-                <FaHeart /> {Math.floor(Math.random() * 10)} Likes
-              </span>
-            </div>
-            
             <div className="blogDetailActions">
               <button 
                 className="blogDetailShareButton"

@@ -56,6 +56,11 @@ export const signupUser = async (payload) => {
   return response.data;
 };
 
+export const googleOAuth = async (payload) => {
+  const response = await api.post('/auth/google', payload);
+  return response.data;
+};
+
 // ==================== BLOG API ====================
 
 /**

@@ -515,7 +515,7 @@
 
 .google-login-container {
   padding: 0.7rem 1.6rem;
-  border-radius: 999px;
+  border-radius: 6px;
   border: none;
   cursor: pointer;
   font-weight: 600;
@@ -525,6 +525,7 @@
 }
 
 .google-login-btn {
+  border-radius: 5px;
   background: rgba(212, 0, 0, 0.92);
   color: white;
   box-shadow: 0 18px 40px rgba(212, 0, 0, 0.35);

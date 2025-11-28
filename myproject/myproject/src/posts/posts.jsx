@@ -12,7 +12,7 @@ const n8nBlog = {
   createdAt: '2024-06-05T10:00:00Z',
   author: 'Demo Author',
   category: 'Automation',
-  imageUrl: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=800&h=400&fit=crop',
+  imageUrl: "https://images.ft.com/v3/image/raw/ftcms%3A20523795-74c3-431b-b744-d515fc74c336?source=next-article&fit=scale-down&quality=highest&width=700&dpr=1",
 };
 
 const fallbackBlogs = [
@@ -25,7 +25,7 @@ const fallbackBlogs = [
     createdAt: '2024-05-01T09:00:00Z',
     author: 'Demo Author',
     category: 'React',
-    imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop',
+    imageUrl: 'https://images.ft.com/v3/image/raw/ftcms%3A20523795-74c3-431b-b744-d515fc74c336?source=next-article&fit=scale-down&quality=highest&width=700&dpr=1',
   },
   {
     id: 'fallback-clean-architecture',

@@ -1,0 +1,142 @@
+.react19Page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 5rem;
+  color: #0f172a;
+  line-height: 1.7;
+  font-family: 'Poppins', sans-serif;
+}
+
+.react19Hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.react19HeroText h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 1rem;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.react19HeroText p {
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  color: #64748b;
+  margin-bottom: 1rem;
+}
+
+.react19HeroText ul {
+  padding-left: 1.4rem;
+  margin-top: 1rem;
+  list-style-type: disc;
+}
+
+.react19HeroText li {
+  margin-bottom: 0.5rem;
+  color: #334155;
+}
+
+.react19Tag {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #61dafb;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.react19HeroImage img,
+.react19Card img {
+  width: 100%;
+  border-radius: 1.25rem;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+  object-fit: cover;
+}
+
+.react19ContentGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.react19Card {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.react19Card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+}
+
+.react19Card h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.react19Card p {
+  margin: 0;
+  color: #64748b;
+  line-height: 1.7;
+}
+
+.react19CTA {
+  margin-top: 4rem;
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  background: linear-gradient(120deg, rgba(97, 218, 251, 0.12), rgba(14, 165, 233, 0.12));
+  text-align: center;
+}
+
+.react19CTA h3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: 1rem;
+  color: #0f172a;
+}
+
+.react19CTA p {
+  color: #64748b;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.react19CTAButton {
+  display: inline-block;
+  margin-top: 1.25rem;
+  background: #61dafb;
+  color: #0f172a;
+  padding: 0.85rem 1.75rem;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.react19CTAButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(97, 218, 251, 0.4);
+  background: #4dd0e1;
+}
+
+@media (max-width: 640px) {
+  .react19Page {
+    padding: 3rem 1rem 4rem;
+  }
+
+  .react19Card {
+    padding: 1.5rem;
+  }
+}
+

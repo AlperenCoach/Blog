@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using API.Models;
 using API.Data;
+using API.Services;
 using MongoDB.Driver;
 
 namespace API.Controller {
@@ -11,10 +12,12 @@ namespace API.Controller {
     public class ContactController : ControllerBase {
         private readonly MongoDbContext _context;
         private readonly ILogger<ContactController> _logger;
+        private readonly EmailService _emailService;
 
-        public ContactController(MongoDbContext context, ILogger<ContactController> logger) {
+        public ContactController(MongoDbContext context, ILogger<ContactController> logger, EmailService emailService) {
             _context = context;
             _logger = logger;
+            _emailService = emailService;
         }
 
         // POST: api/contact
@@ -28,7 +31,20 @@ namespace API.Controller {
                 message.CreatedAt = DateTime.UtcNow;
                 message.IsRead = false;
 
+                // Save to database
                 await _context.ContactMessages.InsertOneAsync(message);
+
+                // Send email to info@alpidev.com
+                var emailSent = await _emailService.SendContactEmailAsync(
+                    message.Name,
+                    message.Email,
+                    message.Subject,
+                    message.Message
+                );
+
+                if (!emailSent) {
+                    _logger.LogWarning("Contact message saved to database but email sending failed for message {Id}", message.Id);
+                }
 
                 return Ok(new { 
                     message = "Your message has been sent successfully!",

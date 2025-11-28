@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { googleOAuth } from '../services/api';
 import './pages.css';
 import { FaGoogle } from "react-icons/fa";
+
+const GOOGLE_CLIENT_ID = '397009625616-vg5sqm9n8gcd0u03bje5dd6it79h8r54.apps.googleusercontent.com';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -19,6 +22,109 @@ export default function Signup() {
   const [message, setMessage] = useState('');
   const [messageColor, setMessageColor] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const handleCredentialSignup = async (googleResponse) => {
+    try {
+      setLoading(true);
+      setMessage('');
+      
+      // Decode JWT token to get user info
+      const base64Url = googleResponse.credential.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      const userData = JSON.parse(jsonPayload);
+
+      // Extract user information from Google OAuth
+      const fullName = userData.name || '';
+      const email = userData.email || '';
+      const profilePicture = userData.picture || '';
+      
+      // Generate username from email or name
+      const username = email.split('@')[0] || fullName.toLowerCase().replace(/\s+/g, '') || 'user' + Date.now();
+
+      // Call Google OAuth endpoint
+      const authResponse = await googleOAuth({
+        email: email,
+        fullName: fullName,
+        username: username,
+        profilePicture: profilePicture || '',
+      });
+
+      // Handle successful OAuth response
+      if (authResponse.token && authResponse.user) {
+        // Store token and user data
+        localStorage.setItem('token', authResponse.token);
+        localStorage.setItem('user', JSON.stringify(authResponse.user));
+        
+        setMessage('Account created successfully with Google! Redirecting...');
+        setMessageColor('green');
+        setTimeout(() => {
+          navigate('/');
+          window.location.reload(); // Reload to update auth state
+        }, 1000);
+      } else {
+        setMessage('Failed to create account with Google. Please try again.');
+        setMessageColor('red');
+      }
+    } catch (error) {
+      console.error('Google OAuth signup error:', error);
+      let errorMessage = 'Failed to sign up with Google. Please try again.';
+      
+      if (error.response?.data) {
+        if (typeof error.response.data === 'string') {
+          errorMessage = error.response.data;
+        } else if (error.response.data.message) {
+          errorMessage = error.response.data.message;
+        } else if (error.response.data.error) {
+          errorMessage = error.response.data.error;
+        }
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      setMessage(errorMessage);
+      setMessageColor('red');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // Wait for Google script to load
+    if (window.google && window.google.accounts) {
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleCredentialSignup,
+      });
+      
+      window.google.accounts.id.renderButton(
+        document.getElementById('google-signup-btn'),
+        { theme: 'outline', size: 'large', text: 'signup_with' }
+      );
+    } else {
+      // Retry after a short delay if script hasn't loaded yet
+      const timer = setTimeout(() => {
+        if (window.google && window.google.accounts) {
+          window.google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleCredentialSignup,
+          });
+          
+          window.google.accounts.id.renderButton(
+            document.getElementById('google-signup-btn'),
+            { theme: 'outline', size: 'large', text: 'signup_with' }
+          );
+        }
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [navigate, signup]);
 
   const handleChange = (e) => {
     setFormData({
@@ -189,10 +295,7 @@ export default function Signup() {
           <button type="submit" disabled={loading}>
             {loading ? 'Creating account...' : 'Sign Up'}
           </button>
-          <button type="button" className="google-login-btn">
-              <FaGoogle size={18} style={{ marginRight: '8px' }} />
-              Continue with Google
-          </button>
+          <div id="google-signup-btn"></div>
         </div>
         <p style={{ 
           textAlign: 'center', 

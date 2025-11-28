@@ -121,6 +121,88 @@ namespace API.Controller {
             }
         }
 
+        [HttpPost("google")]
+        public async Task<IActionResult> GoogleOAuth([FromBody] GoogleOAuthRequest request) {
+            if (request == null) {
+                return BadRequest(new { message = "Request body cannot be null." });
+            }
+            if (!ModelState.IsValid) {
+                var errors = ModelState
+                    .Where(x => x.Value != null && x.Value.Errors.Count > 0)
+                    .SelectMany(x => x.Value!.Errors.Select(e => e.ErrorMessage))
+                    .ToList();
+                return BadRequest(new { message = string.Join(" ", errors) });
+            }
+
+            try {
+                var sanitizedEmail = InputSanitizer.Sanitize(request.Email);
+                var sanitizedFullName = InputSanitizer.Sanitize(request.FullName);
+                var sanitizedProfilePicture = !string.IsNullOrWhiteSpace(request.ProfilePicture) 
+                    ? InputSanitizer.Sanitize(request.ProfilePicture) 
+                    : string.Empty;
+
+                // Check if user already exists
+                var existingUser = await _context.Users.Find(u => u.Email == sanitizedEmail).FirstOrDefaultAsync();
+                if (existingUser != null) {
+                    // User exists, return token for login
+                    if (!existingUser.IsActive) {
+                        return Unauthorized(new { message = "Account is inactive." });
+                    }
+                    var token = _jwtService.GenerateToken(existingUser);
+                    return Ok(BuildAuthResponse(existingUser, token));
+                }
+
+                // Generate username from email if not provided
+                var username = !string.IsNullOrWhiteSpace(request.Username) ? request.Username : sanitizedEmail.Split('@')[0];
+                
+                // Ensure username meets requirements (only letters, numbers, underscores)
+                username = System.Text.RegularExpressions.Regex.Replace(username, @"[^a-zA-Z0-9_]", "_");
+                
+                // Ensure minimum length
+                if (username.Length < 3) {
+                    username = username + DateTime.UtcNow.Ticks.ToString().Substring(0, Math.Min(5, DateTime.UtcNow.Ticks.ToString().Length));
+                }
+                
+                // Ensure maximum length
+                if (username.Length > 50) {
+                    username = username.Substring(0, 50);
+                }
+                
+                var sanitizedUsername = InputSanitizer.Sanitize(username);
+
+                // Check if username already exists
+                var usernameExists = await _context.Users.Find(u => u.Username == sanitizedUsername).AnyAsync();
+                if (usernameExists) {
+                    sanitizedUsername = sanitizedUsername + DateTime.UtcNow.Ticks.ToString().Substring(0, 5);
+                }
+
+                // Create new user with OAuth (no password needed)
+                // Generate a random secure password that will never be used
+                var randomPassword = System.Guid.NewGuid().ToString() + DateTime.UtcNow.Ticks.ToString();
+                var user = new User {
+                    Username = sanitizedUsername,
+                    Email = sanitizedEmail,
+                    Password = PasswordHelper.Hash(randomPassword), // Store a hashed random password
+                    FullName = sanitizedFullName,
+                    PhoneNumber = null,
+                    ProfilePicture = sanitizedProfilePicture ?? string.Empty,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    IsActive = true,
+                    Role = "User"
+                };
+
+                await _context.Users.InsertOneAsync(user);
+
+                var newToken = _jwtService.GenerateToken(user);
+                return Ok(BuildAuthResponse(user, newToken));
+            }
+            catch (Exception ex) {
+                _logger.LogError(ex, "Error processing Google OAuth for user {Email}", request.Email);
+                return StatusCode(500, new { message = "Internal server error" });
+            }
+        }
+
         private static AuthResponse BuildAuthResponse(User user, string token) {
             return new AuthResponse {
                 Token = token,

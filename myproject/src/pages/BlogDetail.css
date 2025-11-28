@@ -177,6 +177,35 @@
   color: #1d4ed8;
 }
 
+.blogDetailText ul,
+.blogDetailText ol {
+  margin: 1.5rem 0;
+  padding-left: 2rem;
+  color: #334155;
+}
+
+.blogDetailText ul li,
+.blogDetailText ol li {
+  margin-bottom: 0.75rem;
+  line-height: 1.7;
+}
+
+.blogDetailText ul li::marker {
+  color: #2563eb;
+}
+
+.blogDetailText strong {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.blogDetailText img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
 .blogDetailFooter {
   display: flex;
   justify-content: space-between;

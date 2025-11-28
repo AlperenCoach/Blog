@@ -53,6 +53,24 @@ namespace API.Models {
         public DateTime UpdatedAt { get; set; }
     }
 
+    public class GoogleOAuthRequest {
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email format.")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Full name is required.")]
+        [StringLength(100, ErrorMessage = "Full name must not exceed 100 characters.")]
+        public string FullName { get; set; } = string.Empty;
+
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 50 characters.")]
+        [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Username can only contain letters, numbers, and underscores.")]
+        public string? Username { get; set; }
+
+        [StringLength(500, ErrorMessage = "Profile picture URL must not exceed 500 characters.")]
+        [Url(ErrorMessage = "Invalid URL format for profile picture.")]
+        public string? ProfilePicture { get; set; }
+    }
+
     public class AuthResponse {
         public string Token { get; set; } = string.Empty;
         public UserResponse User { get; set; } = default!;

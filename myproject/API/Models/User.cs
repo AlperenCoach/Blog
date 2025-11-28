@@ -30,6 +30,9 @@ namespace API.Models {
         
         [BsonElement("isActive")]
         public bool IsActive { get; set; } = true;
+
+        [BsonElement("role")]
+        public string Role { get; set; } = "User"; // Default role: "User" or "Admin"
         
         [BsonElement("createdAt")]
         public DateTime CreatedAt { get; set; }

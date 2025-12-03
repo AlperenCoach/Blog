@@ -5,7 +5,8 @@ import { googleOAuth } from '../services/api';
 import './pages.css';
 import { FaGoogle } from 'react-icons/fa';
 
-const GOOGLE_CLIENT_ID = '397009625616-vg5sqm9n8gcd0u03bje5dd6it79h8r54.apps.googleusercontent.com';
+// Google OAuth Client ID - Use environment variable in production
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '397009625616-vg5sqm9n8gcd0u03bje5dd6it79h8r54.apps.googleusercontent.com';
 
 export default function Login() {
   const navigate = useNavigate();

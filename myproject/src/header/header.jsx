@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import headerImage from '../assets/headerImage.jpg';
 import './header.css';
-import getAnOffer from '../pages/getAnOffer';
 
 const sliderTexts = [
   'We Can Create Websites For \nYour Personal Or Business Needs',
@@ -11,6 +11,7 @@ const sliderTexts = [
 ];
 
 export default function Header() {
+  const navigate = useNavigate();
   const [parallaxOffset, setParallaxOffset] = useState(0);
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
@@ -40,7 +41,7 @@ export default function Header() {
         <span className="headerTitleSm headerSliderText">
           {sliderTexts[currentTextIndex]}
         </span>
-        <button href={getAnOffer} className="headerButton">Get An Offer</button>
+        <button onClick={() => navigate('/get-an-offer')} className="headerButton">Get An Offer</button>
       </div>
       <div className="headerImgWrapper">
         <img

@@ -15,22 +15,22 @@ namespace API.Services {
 
         public JwtService(IConfiguration configuration, IWebHostEnvironment environment) {
             // Priority: Environment Variable > Configuration > Default (Development only)
-            _secretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") 
+            var rawSecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") 
                 ?? configuration["Jwt:SecretKey"] 
                 ?? (environment.IsDevelopment() ? "DevelopmentSecretKeyThatShouldBeAtLeast32CharactersLongForHS256!" : null)!;
 
             // Validate JWT Secret Key
-            if (string.IsNullOrWhiteSpace(_secretKey)) {
+            if (string.IsNullOrWhiteSpace(rawSecretKey)) {
                 throw new InvalidOperationException(
                     "JWT Secret Key is required. Set JWT_SECRET_KEY environment variable or configure it in appsettings.json"
                 );
             }
 
-            if (_secretKey.Length < 32) {
-                throw new InvalidOperationException(
-                    $"JWT Secret Key must be at least 32 characters long for security. Current length: {_secretKey.Length}"
-                );
-            }
+            // Validate secret key length
+            SecretKeyHasher.ValidateSecretKey(rawSecretKey);
+
+            // Hash the secret key using SHA256
+            _secretKey = SecretKeyHasher.HashSecretKey(rawSecretKey);
 
             _issuer = Environment.GetEnvironmentVariable("JWT_ISSUER") 
                 ?? configuration["Jwt:Issuer"] 

@@ -7,9 +7,12 @@ namespace API.Data {
         private readonly IMongoDatabase _database;
 
         public MongoDbContext(IConfiguration configuration) {
-            var connectionString = configuration.GetConnectionString("DefaultConnection") 
+            // Priority: Environment Variable > Configuration > Default
+            var connectionString = Environment.GetEnvironmentVariable("MONGODB_CONNECTION_STRING")
+                ?? configuration.GetConnectionString("DefaultConnection") 
                 ?? "mongodb://localhost:27017";
-            var databaseName = configuration["ConnectionStrings:DatabaseName"] 
+            var databaseName = Environment.GetEnvironmentVariable("DATABASE_NAME")
+                ?? configuration["ConnectionStrings:DatabaseName"] 
                 ?? configuration.GetValue<string>("DatabaseName") 
                 ?? "BlogDb";
             

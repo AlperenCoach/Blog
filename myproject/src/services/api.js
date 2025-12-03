@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// API Base URL
-const API_BASE_URL = 'http://localhost:5065/api';
+// API Base URL - Use environment variable in production, fallback to localhost for development
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5065/api';
 
 // Create a configured axios instance
 const api = axios.create({

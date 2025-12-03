@@ -1,29 +1,3 @@
-<<<<<<< HEAD
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-=======
 # Dependencies
 node_modules/
 package-lock.json
@@ -32,15 +6,21 @@ package-lock.json
 **/bin/
 **/obj/
 **/dist/
+**/dist-ssr/
 
 # IDE
 .vs/
 .vscode/
+!.vscode/extensions.json
 .idea/
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # OS
 .DS_Store
@@ -48,13 +28,19 @@ Thumbs.db
 *.lnk
 
 # Logs
+logs/
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
 # Environment
 .env
 .env.local
 .env.*.local
+*.local
 
 # Temporary files
 *.tmp
@@ -67,5 +53,3 @@ npm-debug.log*
 # Test files
 *.test.js
 *.spec.js
-
->>>>>>> 2aedbb2eb521ea1aed8121cd53fb2e7cd1f35411

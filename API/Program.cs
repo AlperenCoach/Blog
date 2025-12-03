@@ -53,22 +53,22 @@ builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>()
 
 // JWT Authentication Configuration
 // Priority: Environment Variable > Configuration > Default (Development only)
-var jwtSecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") 
+var rawJwtSecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") 
     ?? builder.Configuration["Jwt:SecretKey"] 
     ?? (builder.Environment.IsDevelopment() ? "DevelopmentSecretKeyThatShouldBeAtLeast32CharactersLongForHS256!" : null);
 
 // Validate JWT Secret Key
-if (string.IsNullOrWhiteSpace(jwtSecretKey)) {
+if (string.IsNullOrWhiteSpace(rawJwtSecretKey)) {
     throw new InvalidOperationException(
         "JWT Secret Key is required. Set JWT_SECRET_KEY environment variable or configure it in appsettings.json"
     );
 }
 
-if (jwtSecretKey.Length < 32) {
-    throw new InvalidOperationException(
-        "JWT Secret Key must be at least 32 characters long for security. Current length: " + jwtSecretKey.Length
-    );
-}
+// Validate secret key length
+API.Services.SecretKeyHasher.ValidateSecretKey(rawJwtSecretKey);
+
+// Hash the secret key using SHA256
+var jwtSecretKey = API.Services.SecretKeyHasher.HashSecretKey(rawJwtSecretKey);
 
 var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") 
     ?? builder.Configuration["Jwt:Issuer"] 

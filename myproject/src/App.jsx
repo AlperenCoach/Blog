@@ -18,6 +18,7 @@ import RapidUX from './pages/RapidUX';
 import ProtectedRoute from './components/ProtectedRoute';
 import MyProfile from './pages/myProfile';
 import EditProfile from './pages/EditProfile.jsx';
+import GetAnOffer from './pages/getAnOffer';
 
 const HomePage = () => (
   <>
@@ -66,6 +67,7 @@ function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/get-an-offer" element={<GetAnOffer />} />
       </Routes>
       <Footer />
     </AuthProvider>

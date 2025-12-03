@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:cpanel": "vite build && node build-for-cpanel.js",
+    "postbuild": "node -e \"const fs=require('fs');if(fs.existsSync('.htaccess'))fs.copyFileSync('.htaccess','dist/.htaccess');console.log('✅ .htaccess copied to dist/')\"",
     "lint": "eslint .",
     "preview": "vite preview"
   },
